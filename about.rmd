@@ -2,4 +2,12 @@
 title: "About Me"
 ---
 
-Why I am awesome. 
+- __Name:__ Amber
+- __Ocupation:__ "Household CEO"
+- __Hobbies:__ reading, watercolor, travel. 
+
+I am a Chemical Engineer, and I have enjoyed doing data analysis and visualization projects for past employers. This is an attempt to learn and showcase my skills in data science.
+
+Lets see where this takes me...
+
+__Favorite quote:__ Your heart knows the way, run in that direction (Rumi)
