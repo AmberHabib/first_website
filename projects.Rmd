@@ -10,10 +10,10 @@ The Growth Lab at Harvard University, 2019, "Growth Projections and Complexity R
 And country to continent data from here:
 https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv
 
-I do not understand the science behind this data set.For now -  The goal is to be able to produce and publish some graphics, using R markdown
+I do not understand the science behind this data set. For now -  The goal is to be able to produce and publish some graphics, using R markdown
 
 
-```{r}
+```{r eval = TRUE, echo = FALSE, warning = FALSE}
 rankingsData <- read.delim("Data/rankings.tab")
 locationData <- read.delim("Data/location.tab")
 
@@ -44,7 +44,7 @@ ggplot(data = df2) +
 ```
 
 The first R code chunk ends here. Next chunk:
-```{r}
+```{r eval = TRUE, echo = FALSE, warning = FALSE, message = FALSE}
 #plot3
 ggplot(data = df2) +
   geom_point(mapping= aes(hs_eci, growth_proj, 
@@ -56,7 +56,7 @@ ggplot(data = df2) +
   ggplot(data = df2, mapping= aes(x= hs_eci,y = growth_proj)) +
 geom_point(mapping= aes(color = continent))+
 geom_smooth()+
-ggtitle("Smooth line with points")
+ggtitle("Smooth")
 ```
 
 
