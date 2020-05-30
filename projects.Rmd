@@ -1,0 +1,62 @@
+---
+title: "Projects"
+output: html_document
+---
+
+This is a dummy project. I picked a data set from here: 
+
+The Growth Lab at Harvard University, 2019, "Growth Projections and Complexity Rankings", https://doi.org/10.7910/DVN/XTAQMC, Harvard Dataverse, V2, UNF:6:+dXp8TMQz26OFv7ZOfIxSg== [fileUNF]
+
+And country to continent data from here:
+https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv
+
+I do not understand the science behind this data set.For now -  The goal is to be able to produce and publish some graphics, using R markdown
+
+
+```{r}
+rankingsData <- read.delim("Data/rankings.tab")
+locationData <- read.delim("Data/location.tab")
+
+df <- merge(x = rankingsData, y = locationData, by = "location_id", all = TRUE)
+
+
+continentdt <- read.csv("Data/continent.csv")
+colnames(continentdt)[3] <- "code"
+continentclean <- subset(continentdt, select= c(country,code, continent))
+
+df2 <- merge(x = df, y = continentclean, by = "code", all = TRUE)
+
+
+#plot 1
+library(ggplot2)
+qplot(x=hs_eci, y=sitc_eci, 
+      data=df, 
+      colour=year, 
+      main="HS ECI vs SITC ECI")
+
+#plot 2
+ggplot(data = df2) +
+  geom_point(mapping= aes(hs_eci, growth_proj, 
+                          colour = continent))+
+  ggtitle("Country data grouped by continent")
+
+
+```
+
+The first R code chunk ends here. Next chunk:
+```{r}
+#plot3
+ggplot(data = df2) +
+  geom_point(mapping= aes(hs_eci, growth_proj, 
+                          colour = continent))+
+  facet_wrap(~ continent, nrow = 3)+
+  ggtitle("Facet Wrap by continent")
+  
+#plot 4
+  ggplot(data = df2, mapping= aes(x= hs_eci,y = growth_proj)) +
+geom_point(mapping= aes(color = continent))+
+geom_smooth()+
+ggtitle("Smooth line with points")
+```
+
+
