@@ -11,7 +11,7 @@
 
 
 
-<title>Personal Website</title>
+<title>Projects</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -293,12 +293,66 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Personal Website</h1>
+<h1 class="title toc-ignore">Projects</h1>
 
 </div>
 
 
-<p>Hello, World!</p>
+<p>This is a dummy project. I picked a data set from here:</p>
+<p>The Growth Lab at Harvard University, 2019, “Growth Projections and Complexity Rankings”, <a href="https://doi.org/10.7910/DVN/XTAQMC" class="uri">https://doi.org/10.7910/DVN/XTAQMC</a>, Harvard Dataverse, V2, UNF:6:+dXp8TMQz26OFv7ZOfIxSg== [fileUNF]</p>
+<p>And country to continent data from here: <a href="https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv" class="uri">https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv</a></p>
+<p>I do not understand the science behind this data set.For now - The goal is to be able to produce and publish some graphics, using R markdown</p>
+<pre class="r"><code>rankingsData &lt;- read.delim(&quot;Data/rankings.tab&quot;)
+locationData &lt;- read.delim(&quot;Data/location.tab&quot;)
+
+df &lt;- merge(x = rankingsData, y = locationData, by = &quot;location_id&quot;, all = TRUE)
+
+
+continentdt &lt;- read.csv(&quot;Data/continent.csv&quot;)
+colnames(continentdt)[3] &lt;- &quot;code&quot;
+continentclean &lt;- subset(continentdt, select= c(country,code, continent))
+
+df2 &lt;- merge(x = df, y = continentclean, by = &quot;code&quot;, all = TRUE)
+
+
+#plot 1
+library(ggplot2)
+qplot(x=hs_eci, y=sitc_eci, 
+      data=df, 
+      colour=year, 
+      main=&quot;HS ECI vs SITC ECI&quot;)</code></pre>
+<pre><code>## Warning: Removed 151 rows containing missing values
+## (geom_point).</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>#plot 2
+ggplot(data = df2) +
+  geom_point(mapping= aes(hs_eci, growth_proj, 
+                          colour = continent))+
+  ggtitle(&quot;Country data grouped by continent&quot;)</code></pre>
+<pre><code>## Warning: Removed 1596 rows containing missing values
+## (geom_point).</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<p>The first R code chunk ends here. Next chunk:</p>
+<pre class="r"><code>#plot3
+ggplot(data = df2) +
+  geom_point(mapping= aes(hs_eci, growth_proj, 
+                          colour = continent))+
+  facet_wrap(~ continent, nrow = 3)+
+  ggtitle(&quot;Facet Wrap by continent&quot;)</code></pre>
+<pre><code>## Warning: Removed 1596 rows containing missing values
+## (geom_point).</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>#plot 4
+  ggplot(data = df2, mapping= aes(x= hs_eci,y = growth_proj)) +
+geom_point(mapping= aes(color = continent))+
+geom_smooth()+
+ggtitle(&quot;Smooth line with points&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>## Warning: Removed 1596 rows containing non-finite values
+## (stat_smooth).
+
+## Warning: Removed 1596 rows containing missing values (geom_point).</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 
 
 
