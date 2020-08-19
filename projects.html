@@ -298,12 +298,297 @@ $(document).ready(function () {
 </div>
 
 
-<p>This is a dummy project. I picked a data set from here:</p>
-<p>The Growth Lab at Harvard University, 2019, “Growth Projections and Complexity Rankings”, <a href="https://doi.org/10.7910/DVN/XTAQMC" class="uri">https://doi.org/10.7910/DVN/XTAQMC</a>, Harvard Dataverse, V2, UNF:6:+dXp8TMQz26OFv7ZOfIxSg== [fileUNF]</p>
-<p>And country to continent data from here: <a href="https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv" class="uri">https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv</a></p>
-<p>I do not understand the science behind this data set. For now - The goal is to be able to produce and publish some graphics, using R markdown</p>
-<p><img src="projects_files/figure-html/unnamed-chunk-1-1.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
-<p>The first R code chunk ends here. Next chunk: <img src="projects_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p>This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.</p>
+<div id="question-1-popular-times-of-travel" class="section level1">
+<h1>Question 1: Popular times of travel</h1>
+<p>What is the most common month ? What is the most common day of week? What is the most common hour of day?</p>
+<div id="step-a-data-cleaning-and-organization--" class="section level2">
+<h2>Step a) Data Cleaning and organization -</h2>
+<p>In the first R code chunk, I used data.table library to read only the columns of interest, and to create a new column ‘City’ (fill it with values Chicago, Newyork and Washington respectively) for all three data sets. I then combined all of the data tables into one using rbind. Finally, I used the stringr replace all function for replacing the spaces in column names with a dot. This wrangling work resulted in creating one table for creating all of the summaries and visualizations needed to answer this question.</p>
+<pre><code>##             Start.Time            End.Time Trip.Duration    City start.month start.DOW start.hourofday
+## 1: 2017-06-23 15:09:32 2017-06-23 15:14:53           321 Chicago         Jun       Fri              15
+## 2: 2017-05-25 18:19:03 2017-05-25 18:45:53          1610 Chicago         May       Thu              18
+## 3: 2017-01-04 08:27:49 2017-01-04 08:34:45           416 Chicago         Jan       Wed              08
+## 4: 2017-03-06 13:49:38 2017-03-06 13:55:28           350 Chicago         Mar       Mon              13
+## 5: 2017-01-17 14:53:07 2017-01-17 15:02:01           534 Chicago         Jan       Tue              14
+## 6: 2017-06-26 09:01:20 2017-06-26 09:11:06           586 Chicago         Jun       Mon              09</code></pre>
+</div>
+<div id="step-b-functions-for-creating-summaries" class="section level2">
+<h2>Step b) Functions for creating summaries</h2>
+<ol style="list-style-type: lower-roman">
+<li>Get.Most.Common –&gt; returns the most common (i.e. the highest count) metric combined for the three cities (overall) as well as broken down per city (grouped)</li>
+</ol>
+<pre><code>## [1] &quot;-----Most common Month-----&quot;</code></pre>
+<pre><code>## $`Most Common Overall`
+##    start.month Overall_ Count
+## 1:         Jun         242442
+## 
+## $`Most Common Grouped`
+##          City start.month Grouped_ Count
+## 1:    Chicago         Jun          98081
+## 2:    Newyork         Jun          76022
+## 3: Washington         Jun          68339</code></pre>
+<pre><code>## [1] &quot;-----Most common day of the week-----&quot;</code></pre>
+<pre><code>## $`Most Common Overall`
+##    start.DOW Overall_ Count
+## 1:       Wed         142773
+## 
+## $`Most Common Grouped`
+##          City start.DOW Grouped_ Count
+## 1:    Chicago       Tue          45912
+## 2:    Newyork       Wed          52087
+## 3: Washington       Wed          48156</code></pre>
+<pre><code>## [1] &quot;-----Most common hour of the day-----&quot;</code></pre>
+<pre><code>## $`Most Common Overall`
+##    start.hourofday Overall_ Count
+## 1:              08          81734
+## 
+## $`Most Common Grouped`
+##          City start.hourofday Grouped_ Count
+## 1:    Chicago              17          35992
+## 2:    Newyork              17          30041
+## 3: Washington              08          33019</code></pre>
+<ol start="2" style="list-style-type: lower-roman">
+<li>Freq.Categorical - creates frequency tables for categorical variable input combined for the three cities (overall) as well as broken down per city (grouped). The frequency table supplements the data visualizations created using ggplot2, if viewers need to take a look at exact numbers for a certain metric.</li>
+</ol>
+<p><img src="projects_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre><code>## $Overall
+##    metric      N
+## 1:    Jun 242442
+## 2:    May 191963
+## 3:    Apr 172455
+## 4:    Feb 105730
+## 5:    Mar 103666
+## 6:    Jan  83744
+## 
+## $Grouped
+##         grp.by metric     N
+##  1:    Chicago    Jun 98081
+##  2:    Newyork    Jun 76022
+##  3: Washington    Jun 68339
+##  4:    Newyork    May 67015
+##  5:    Chicago    May 66755
+##  6: Washington    Apr 62620
+##  7: Washington    May 58193
+##  8:    Newyork    Apr 58176
+##  9:    Chicago    Apr 51659
+## 10: Washington    Mar 41863
+## 11: Washington    Feb 38932
+## 12:    Newyork    Feb 34741
+## 13:    Newyork    Mar 32164
+## 14:    Chicago    Feb 32057
+## 15:    Newyork    Jan 31882
+## 16: Washington    Jan 30053
+## 17:    Chicago    Mar 29639
+## 18:    Chicago    Jan 21809</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<pre><code>## $Overall
+##    metric      N
+## 1:    Sun 114502
+## 2:    Mon 126734
+## 3:    Tue 134183
+## 4:    Wed 142773
+## 5:    Thu 134538
+## 6:    Fri 131866
+## 7:    Sat 115404
+## 
+## $Grouped
+##         grp.by metric     N
+##  1: Washington    Sun 39576
+##  2:    Chicago    Sun 38775
+##  3:    Newyork    Sun 36151
+##  4:    Chicago    Mon 44881
+##  5:    Newyork    Mon 41923
+##  6: Washington    Mon 39930
+##  7:    Chicago    Tue 45912
+##  8: Washington    Tue 44519
+##  9:    Newyork    Tue 43752
+## 10:    Newyork    Wed 52087
+## 11: Washington    Wed 48156
+## 12:    Chicago    Wed 42530
+## 13:    Newyork    Thu 47497
+## 14: Washington    Thu 43946
+## 15:    Chicago    Thu 43095
+## 16:    Newyork    Fri 44664
+## 17:    Chicago    Fri 43922
+## 18: Washington    Fri 43280
+## 19:    Chicago    Sat 40885
+## 20: Washington    Sat 40593
+## 21:    Newyork    Sat 33926
+##         grp.by metric     N</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-3-5.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-6.png" width="672" /></p>
+<pre><code>## $Overall
+##     metric     N
+##  1:     08 81734
+##  2:     17 79373
+##  3:     18 62237
+##  4:     07 61003
+##  5:     16 58937
+##  6:     09 53215
+##  7:     12 52109
+##  8:     11 45799
+##  9:     15 45756
+## 10:     19 41450
+## 11:     10 41401
+## 12:     14 41381
+## 13:     13 40487
+## 14:     06 38245
+## 15:     20 27341
+## 16:     05 27165
+## 17:     21 19142
+## 18:     04 16170
+## 19:     01 14211
+## 20:     22 13650
+## 21:     03 13108
+## 22:     02 12910
+## 23:     23  8436
+## 24:     00  4740
+##     metric     N
+## 
+## $Grouped
+##         grp.by metric     N
+##  1:    Chicago     17 35992
+##  2: Washington     08 33019
+##  3:    Newyork     17 30041
+##  4: Washington     07 28848
+##  5:    Chicago     16 28742
+##  6:    Newyork     18 28702
+##  7:    Newyork     08 24581
+##  8:    Chicago     08 24134
+##  9:    Chicago     18 23512
+## 10: Washington     06 23381
+## 11: Washington     05 22931
+## 12:    Newyork     16 21161
+## 13: Washington     09 20360
+## 14:    Chicago     15 20108
+## 15:    Newyork     19 19611
+## 16:    Newyork     09 19164
+## 17: Washington     12 18576
+## 18:    Newyork     15 18455
+## 19:    Chicago     07 18380
+## 20:    Newyork     14 17630
+## 21:    Chicago     14 17596
+## 22:    Chicago     13 17559
+## 23:    Chicago     12 17467
+## 24: Washington     11 16813
+## 25:    Newyork     13 16686
+## 26: Washington     10 16315
+## 27:    Newyork     12 16066
+## 28:    Chicago     19 15715
+## 29: Washington     04 15223
+## 30:    Chicago     11 15040
+## 31:    Newyork     11 13946
+## 32:    Newyork     07 13775
+## 33:    Chicago     09 13691
+## 34: Washington     17 13340
+## 35:    Newyork     20 13184
+## 36:    Newyork     10 13134
+## 37: Washington     03 12290
+## 38:    Chicago     10 11952
+## 39: Washington     01 11942
+## 40: Washington     02 11561
+## 41:    Chicago     20 10301
+## 42: Washington     18 10023
+## 43:    Newyork     21  9120
+## 44: Washington     16  9034
+## 45:    Chicago     06  8246
+## 46: Washington     15  7193
+## 47:    Chicago     21  7103
+## 48:    Newyork     22  6713
+## 49:    Newyork     06  6618
+## 50: Washington     13  6242
+## 51: Washington     14  6155
+## 52: Washington     19  6124
+## 53:    Chicago     22  4895
+## 54:    Newyork     23  4265
+## 55: Washington     20  3856
+## 56:    Chicago     23  3014
+## 57: Washington     21  2919
+## 58:    Chicago     05  2437
+## 59:    Newyork     00  2398
+## 60: Washington     22  2042
+## 61:    Newyork     05  1797
+## 62:    Chicago     00  1686
+## 63:    Newyork     01  1287
+## 64: Washington     23  1157
+## 65:    Chicago     01   982
+## 66:    Newyork     02   740
+## 67: Washington     00   656
+## 68:    Chicago     02   609
+## 69:    Newyork     04   480
+## 70:    Chicago     04   467
+## 71:    Newyork     03   446
+## 72:    Chicago     03   372
+##         grp.by metric     N</code></pre>
+</div>
+<div id="step-c-results-summary" class="section level2">
+<h2>Step c) Results summary</h2>
+<p>June is the most common rental month overall, as well as for each of the cities. This may be driven by warm summer temperatures, tourists visitings due to school holidays etc. Wednesday is the most common day for start of the rentals overall. When broken down by the city, we see that wednesday is still the most comon rental start day for New York and washington, but for Chicgo the most common day of retnal start is Tuesday. weekday rentals may be higher due to workers commuting to work. Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm being the most popular times for travel. This, again is likely due to the workers commuting to and from work at these hours. Trend by city shows the same dual peaks. The 5:00pm peak for washington is small, which may be due to overnight rentals.</p>
+</div>
+</div>
+<div id="question-2-trip-duration" class="section level1">
+<h1>Question 2: Trip duration</h1>
+<p>What is the total travel time for users in different cities? What is the average travel time for users in different cities?</p>
+<div id="step-a" class="section level2">
+<h2>Step a)</h2>
+<p>I used the same data table (dt) created in question 1 step a. The below code generates a summary table, a plot for total travel time by city and a plot for average travel time by city in minutes. Note: I could have used the available trip.duration column for this analysis, instead of calculating the duration (start time - end time). This helped me learn more, and output is in minutes opposed to Trip.Duration column which shows the time recorded in seconds.</p>
+<pre><code>##          City Avg.time.min total.time.min  Count
+## 1:    Chicago     15.60399        4681196 300000
+## 2:    Newyork     15.00305        4500916 300000
+## 3: Washington     12.41812        3725437 300000</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="step-b-summary" class="section level2">
+<h2>Step b) Summary:</h2>
+<p>Average travel time is shortest for Washington at 12.41 min and longest for Chicago at 15.60 min. Total travel time is highest for chicago at &gt; 4.6 million minutes, closely folowed by NY at ~4.5 million minutes. Washington shows lowest system utilization for all three cities at ~3.7million minutes usage for the 6 month period.</p>
+</div>
+</div>
+<div id="question-3-user-info" class="section level1">
+<h1>Question 3: User info</h1>
+<p>What are the counts of each user type? What are the counts of each gender (only available for NYC and Chicago)? What are the earliest, most recent, most common year of birth (only available for NYC and Chicago)?</p>
+<div id="step-a-1" class="section level2">
+<h2>Step a)</h2>
+<p>Counts for each user type, counts for each gender overall, and counts for each gender broken down by city. Again used the data.table library functions for creating summaries and ggplot for visualizations.</p>
+<pre><code>## [1] &quot;-------Counts of each user type---------&quot;</code></pre>
+<pre><code>##     User.Type  Count
+## 1: Subscriber 728824
+## 2:   Customer 170483
+## 3:  Dependent      1</code></pre>
+<pre><code>## [1] &quot;-------counts of each gender---------&quot;</code></pre>
+<pre><code>##    Gender  Count
+## 1:   Male 385198
+## 2: Female 124541</code></pre>
+<pre><code>## [1] &quot;-------counts of each gender by city---------&quot;</code></pre>
+<pre><code>##    Gender    City  Count
+## 1:   Male Chicago 181190
+## 2: Female Chicago  57758
+## 3:   Male Newyork 204008
+## 4: Female Newyork  66783</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary:</h2>
+<p>The most common user type is subscriber. More male users overall than female. When looking at comparison by city, both cities individually have more male users.</p>
+</div>
+<div id="step-b" class="section level2">
+<h2>Step b)</h2>
+<p>Earliest, most recent and most common year of birth calculation:</p>
+<pre><code>## [1] &quot;The most recent birth year is 2016&quot;</code></pre>
+<pre><code>## [1] &quot;The earliest birth year is 1885&quot;</code></pre>
+<pre><code>##    Birth.Year Count
+## 1:       1989 25792
+## 2:       1988 23440
+## 3:       1990 23187</code></pre>
+<pre><code>## Warning: Removed 31 rows containing missing values (position_stack).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_bar).</code></pre>
+<p><img src="projects_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="summary-1" class="section level2">
+<h2>Summary:</h2>
+<p>The most recent birth year for users is 2016, the earliest birth year is 1885 (which may indicate that some users use the default option) and most common year is 1989.</p>
+<p>Thats it. Thanks for reading!</p>
+</div>
+</div>
 
 
 

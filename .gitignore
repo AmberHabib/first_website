@@ -1,4 +1,5 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+Data
+site_libs
+projects_files
+Rhistory
+*.csv

@@ -2,12 +2,11 @@
 title: "About Me"
 ---
 
-- __Name:__ Amber
-- __Ocupation:__ "Household CEO"
+- __Name:__ Amber Ahmed
+- __Ocupation:__ Engineer
 - __Hobbies:__ reading, watercolor, travel. 
 
-I am a Chemical Engineer, and I have enjoyed doing data analysis and visualization projects for past employers. This is an attempt to learn and showcase my skills in data science.
+I am a Chemical Engineer, and I have enjoyed doing data analysis and visualization projects for past employers. Currently, I am happily employed ONLY as the mother to two most adorable children (ages 1 and 6) and as wife to the smartest man alive. Life is good. 
 
-Lets see where this takes me...
 
-__Favorite quote:__ Your heart knows the way, run in that direction (Rumi)
+__Credit__ This website is built using R markdown. The full tutorial is located [here](https://livefreeordichotomize.com/2017/08/08/how-to-make-an-rmarkdown-website/)

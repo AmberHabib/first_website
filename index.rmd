@@ -1,5 +1,5 @@
 ---
-title: "Personal Website"
+title: "Amber's first website with R markdown"
 ---
 
-Hello, World!
+This website has been created using the tutorial by Nick Strayer and Lucy D'Agostino located [here.](https://livefreeordichotomize.com/2017/08/08/how-to-make-an-rmarkdown-website/)

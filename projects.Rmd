@@ -3,60 +3,279 @@ title: "Projects"
 output: html_document
 ---
 
-This is a dummy project. I picked a data set from here: 
-
-The Growth Lab at Harvard University, 2019, "Growth Projections and Complexity Rankings", https://doi.org/10.7910/DVN/XTAQMC, Harvard Dataverse, V2, UNF:6:+dXp8TMQz26OFv7ZOfIxSg== [fileUNF]
-
-And country to continent data from here:
-https://www.kaggle.com/statchaitya/country-to-continent?select=countryContinent.csv
-
-I do not understand the science behind this data set. For now -  The goal is to be able to produce and publish some graphics, using R markdown
-
-
-```{r eval = TRUE, echo = FALSE, warning = FALSE}
-rankingsData <- read.delim("Data/rankings.tab")
-locationData <- read.delim("Data/location.tab")
-
-df <- merge(x = rankingsData, y = locationData, by = "location_id", all = TRUE)
-
-
-continentdt <- read.csv("Data/continent.csv")
-colnames(continentdt)[3] <- "code"
-continentclean <- subset(continentdt, select= c(country,code, continent))
-
-df2 <- merge(x = df, y = continentclean, by = "code", all = TRUE)
-
-
-#plot 1
+This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(stringr)
 library(ggplot2)
-qplot(x=hs_eci, y=sitc_eci, 
-      data=df, 
-      colour=year, 
-      main="HS ECI vs SITC ECI")
 
-#plot 2
-ggplot(data = df2) +
-  geom_point(mapping= aes(hs_eci, growth_proj, 
-                          colour = continent))+
-  ggtitle("Country data grouped by continent")
 
+#plot background theme, chosen by my 6 yr old :)
+th1<- theme(
+              panel.background = element_rect(fill = "pink",
+                                colour = "pink",
+                                size = 0.5, linetype = "solid"),
+              panel.grid.major = element_line(size = 0.5, linetype = 'solid',
+                                colour = "white"), 
+              panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
+                                colour = "white"))
+# color palette vector for line plots
+c.palette <- c("purple", "magenta", "turquoise")
+```
+
+# Question 1: Popular times of travel 
+What is the most common month ?
+What is the most common day of week?
+What is the most common hour of day?
+
+##Step a) Data Cleaning and organization - 
+In the first R code chunk, I used data.table library to read only the columns of interest, and to create a new column 'City' (fill it with values Chicago, Newyork and Washington respectively) for all three data sets. I then combined all of the data tables into one using rbind. Finally, I used the stringr replace all function for replacing the spaces in column names with a dot. This wrangling work resulted in creating one table for creating all of the summaries and visualizations needed to answer this question. 
+
+```{R}
+ch <- fread("Data/chicago.csv", select = c(2,3,4))         # read csv as data table
+ch[,"City":="Chicago"]
+
+ny <- fread('Data/new-york-city.csv', select = c(2,3,4))
+ny[,"City":= "Newyork"]
+
+wa <- fread('Data/washington.csv', select = c(2,3,4))
+wa[,"City":= "Washington"]
+
+dt <- rbind(ch,ny,wa)                                 #combine data tables
+names(dt) <- str_replace_all(names(dt), c(" "="."))   #replace empty space in column name with a .
+strt <- as.POSIXct(dt$Start.Time)                     #POSIX for timestamps as calendar times
+dt[, "start.month" := strftime(strt, "%b")]           #extracting month from timestamp and storing in a new column start.month
+dt[, "start.DOW" := strftime(strt, "%a")]             #extracting day of week from timestamp and storing in a new column start.DOW
+dt[, "start.hourofday" := strftime(strt, "%H")]       #extracting hour of day from timestamp and storing in a new column start.hourofday
+head(dt)
+```
+
+##Step b) Functions for creating summaries
+i) Get.Most.Common --> returns the most common (i.e. the highest count) metric combined for the three cities (overall) as well as broken down per city (grouped)
+
+```{r}
+Get.Most.Common <- function(metric, grp.by){
+      usr_input1<- metric
+      usr_input2<- grp.by
+      txt_usr_input1<- deparse((substitute(metric)))    # only retaining the text of the argument
+      txt_usr_input2<-deparse((substitute(grp.by)))    # only retaining the text of the argument
+      temp.overall<- dt[, .N, by=.(metric)]             #create list of count by metric (i.e. month, DOW or hour) for the entrie table
+      overall <- temp.overall[, .SD[which.max(N)]]      # find the highest count i.e. the most common
+      setnames(overall, "metric",sub('...','',txt_usr_input1))        #output table headers to reflect input text
+      setnames(overall, "N", "Overall_ Count")
+      temp.bygrp <- dt[, .N, by=.(grp.by, metric)]      # create count grouped by city and the metric
+      bygrp <-temp.bygrp[, .SD[which.max(N)], by =grp.by]   #find max
+      setnames(bygrp, "grp.by",sub('...','',txt_usr_input2))              #rename headers
+      setnames(bygrp, "metric",sub('...','',txt_usr_input1))
+      setnames(bygrp, "N", "Grouped_ Count")
+      
+      result <- list("Most Common Overall"=overall, "Most Common Grouped"= bygrp)   #combine outputs into a list since a function can only have       
+    
+     
+      return(result)
+     
+}
+print("-----Most common Month-----")
+Get.Most.Common(dt$start.month, dt$City)
+print("-----Most common day of the week-----")
+Get.Most.Common(dt$start.DOW, dt$City)
+print("-----Most common hour of the day-----")
+Get.Most.Common(dt$start.hourofday,dt$City)
+```
+
+ii) Freq.Categorical - creates frequency tables for categorical variable input combined for the three cities (overall) as well as broken down per city (grouped). The frequency table supplements the data visualizations created using ggplot2, if viewers need to take a look at exact numbers for a certain metric.
+
+```{r}
+
+#function to calculate frequency tables and plots by metric 
+#1-deparse will get text out of user input - for creating dynamic plot labels
+#2-Overall frequency followed by bygrp(by city) frequency table using data.table functions
+#3 - c.palette specifies color palette for the bygrp(by city) plots. 
+#4-  create a list of ggplot items that are common to all plots.
+#5 -Conditional (if else) to order by monthor by day - do this forboth overall and bygrp(by city)plots.
+freq.categorical <- function(metric, grp.by){  
+      
+      txt_usr_input1<- sub('...','',deparse((substitute(metric)))) #1
+      txt_usr_input2<- sub('...','',deparse((substitute(grp.by))))
+      temp.overall<- dt[, .N, by=.(metric)]#summarizing data
+      overall <- temp.overall[order(-N)]                #2
+      temp.bygrp <- dt[, .N, by=.(grp.by, metric)]
+      bygrp <- temp.bygrp[order(dt, -N)] #2
+      c.palette <- c("purple", "magenta", "turquoise")#3
+      #4 (for overall)
+      p<- list(
+          geom_bar(stat = "identity", fill = "purple"), 
+          ggtitle(paste0('Histogram for ', txt_usr_input1)),
+          scale_y_continuous(labels = function(x) format(x, scientific = FALSE)),
+          th1,labs(x = paste0(txt_usr_input1), y = 'Count')
+      )
+      #4 (for bygrp)
+      p2 <- list(geom_line(size = 1) ,
+                scale_y_continuous(labels = function(x) format(x, scientific = FALSE)),
+                geom_point( size=4, shape=21,fill="grey"),
+                scale_color_manual(values = c.palette), th1,
+                ggtitle(paste0('Trend chart for ', txt_usr_input1, ' by ', txt_usr_input2)),
+                labs(x = paste0(txt_usr_input1), y = 'Count')
+        )
+      # 5 conditional
+      #if DOW (string) in the argument, then factor the metric column with levels as ordered days of week with Sunday being first day
+      if(str_detect(txt_usr_input1, "DOW")) {  
+          overall$metric <- factor(overall$metric, 
+                                  levels =c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"))
+          overall<- overall[order(overall$metric)]
+          bygrp$metric <- factor(bygrp$metric, 
+                                  levels =c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"))
+          bygrp<- bygrp[order(bygrp$metric)]
+          pltx <- ggplot(data=overall, aes_string(x=names(overall)[1], y = names(overall)[2])) + p  
+          plt2x<-ggplot(data=bygrp, aes_string(x=names(bygrp)[2], y=names(bygrp)[3], group = names(bygrp)[1], colour = names(bygrp)[1])) +p2
+      print(pltx)
+      print(plt2x)
+      #elseif month(string) in the argument, then use the month.abb function to order month JAn - DEc
+      }else if(str_detect(txt_usr_input1, "month")){
+          pltx <-ggplot(data=overall, aes_string(x=names(overall)[1], y = names(overall)[2])) +
+                 scale_x_discrete(limits = month.abb) + p
+          plt2x<-ggplot(data=bygrp, aes_string(x=names(bygrp)[2], y=names(bygrp)[3], group = names(bygrp)[1], colour = names(bygrp)[1])) +
+                 scale_x_discrete(limits = month.abb) + p2
+      print(pltx)
+      print(plt2x)
+      # else plot and print
+      }else{
+          pltx <- ggplot(data=overall, aes_string(x=names(overall)[1], y = names(overall)[2])) + p
+          plt2x<-ggplot(data=bygrp, aes_string(x=names(bygrp)[2], y=names(bygrp)[3], group = names(bygrp)[1], colour = names(bygrp)[1])) +p2
+      print(pltx)
+      print(plt2x)
+      }
+    
+      result <- list("Overall"=overall, "Grouped"= bygrp) #combining summary result
+      
+return(result)
+     
+}
+
+freq.categorical(dt$start.month, dt$City)
+freq.categorical(dt$start.DOW, dt$City)
+freq.categorical(dt$start.hourofday, dt$City)
+```
+##Step c) Results summary
+June is the most common rental month overall, as well as for each of the cities. This may be driven by warm summer temperatures, tourists visitings due to school holidays etc.
+Wednesday is the most common day for start of the rentals overall. When broken down by the city, we see that wednesday is still the most comon rental start day for New York and washington, but for Chicgo the most common day of retnal start is Tuesday. weekday rentals may be higher due to workers commuting to work.
+Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm being the most popular times for travel. This, again is likely due to the workers commuting to and from work at these hours. Trend by city shows the same dual peaks. The 5:00pm peak for washington is small, which may be due to overnight rentals. 
+
+#Question 2: Trip duration
+
+What is the total travel time for users in different cities?
+What is the average travel time for users in different cities?
+
+##Step a) 
+I used the same data table (dt) created in question 1 step a. The below code generates a summary table, a plot for total travel time by city and a plot for average travel time by city in minutes.
+Note: I could have used the available trip.duration column for this analysis, instead of calculating the duration (start time - end time). This helped me learn more, and output is in minutes opposed to Trip.Duration column which shows the time recorded in seconds. 
+
+
+```{r}
+
+t1 <- strptime(dt$Start.Time, "%Y-%m-%d %H:%M:%OS") # t1 is date time object containig start time
+t2<- strptime(dt$End.Time, "%Y-%m-%d %H:%M:%OS")   #t2 is date time object containing end time
+dt[, "Duration" := as.numeric(t2-t1)]   # creating a new column 'duration' which is difference between start and end times in mins
+summary.trip.duration <- dt [, .(Avg.time.min = mean(Duration), #generating summary table by city
+                              total.time.min = sum(Duration),
+                             Count = .N), 
+                             by=City
+                            ][ order(-total.time.min) ]
+print(summary.trip.duration)
+
+library(ggplot2)                   
+plt3<- ggplot(data = summary.trip.duration, aes(x=City, y=total.time.min)) + #generating plot for total time
+        geom_bar(stat = "identity", fill = "purple")+
+          ggtitle(paste0('Histogram for total tavel time'))+
+          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+          th1+labs(y = 'total travel time in minutes')
+print(plt3)
+
+plt4 <- ggplot(data = summary.trip.duration, aes(x=City, y=Avg.time.min)) + #generating plot for average time
+        geom_bar(stat = "identity", fill = "purple")+
+          ggtitle(paste0('Histogram for average tavel time in minutes'))+
+          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+          th1+labs(y = 'Average travel time in minutes')
+print(plt4)
 
 ```
 
-The first R code chunk ends here. Next chunk:
-```{r eval = TRUE, echo = FALSE, warning = FALSE, message = FALSE}
-#plot3
-ggplot(data = df2) +
-  geom_point(mapping= aes(hs_eci, growth_proj, 
-                          colour = continent))+
-  facet_wrap(~ continent, nrow = 3)+
-  ggtitle("Facet Wrap by continent")
-  
-#plot 4
-  ggplot(data = df2, mapping= aes(x= hs_eci,y = growth_proj)) +
-geom_point(mapping= aes(color = continent))+
-geom_smooth()+
-ggtitle("Smooth")
+##Step b) Summary: 
+Average travel time is shortest for Washington at 12.41 min and longest for Chicago at 15.60 min. Total travel time is highest for chicago at > 4.6 million minutes, closely folowed by NY at ~4.5 million minutes. Washington shows lowest system utilization for all three cities at ~3.7million minutes usage for the 6 month period. 
+
+#Question 3: User info
+
+What are the counts of each user type?
+What are the counts of each gender (only available for NYC and Chicago)?
+What are the earliest, most recent, most common year of birth (only available for NYC and Chicago)?
+
+##Step a) 
+Counts for each user type, counts for each gender overall, and counts for each gender broken down by city. Again used the data.table library functions for creating summaries and ggplot for visualizations.
+```{r}
+ch2 <- fread('Data/chicago.csv', select=c(7,8,9))
+ch2[,"City":= "Chicago"]
+
+ny2 <- fread('Data/new-york-city.csv', select = c(7,8,9))
+ny2[,"City":= "Newyork"]
+
+wa2 <- fread('Data/washington.csv', select = c(7))
+wa2[,"City":= "Washington"]
+
+dt2<- rbind(ch2,ny2,wa2, fill = TRUE)  
+names(dt2) <- str_replace_all(names(dt2), c(" "="."))   #replace empty space in column name with a .
+
+count.user.type <- dt2[User.Type !=""][,.(Count = .N), by =User.Type][order(-Count)]
+print("-------Counts of each user type---------")
+print(count.user.type)
+
+gs <- dt2[Gender!=""& !is.na(Gender)][,.(Count=.N), by=Gender]
+gs.bycity<- dt2[Gender!=""& !is.na(Gender)][,.(Count=.N), by=.(Gender,City)]
+print("-------counts of each gender---------")
+print(gs)
+print("-------counts of each gender by city---------")
+print(gs.bycity)
+
+plt5 <-ggplot(data=gs.bycity, aes(x = Gender, y= Count, fill = City)) +
+              geom_bar(stat="identity", width=.5, position = "dodge")+
+              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+              th1+ scale_fill_manual(values = c.palette)+
+              ggtitle('Histogram for gender count by city')+
+              labs(x = 'Gender', y = 'Count')
+  print(plt5)
+ 
+
 ```
 
+##Summary:
+The most common user type is subscriber. More male users overall than female. When looking at comparison by city, both cities individually have more male users.
+
+##Step b)
+Earliest, most recent and most common year of birth calculation: 
+```{r}
+#order data table by birth year ascending - get most recent year
+r.yr <- dt2[Birth.Year!=""& !is.na(Birth.Year)][,(max(Birth.Year))]
+print(paste0("The most recent birth year is ",r.yr))
+#order data table by birth year descending - get earliest year
+e.yr <- dt2[Birth.Year!=""& !is.na(Birth.Year)][,(min(Birth.Year))]
+print(paste0("The earliest birth year is ",e.yr))
+#count number of occurences of each birht year, and order by count descending to get the most common year on top.
+c.yr <- dt2[Birth.Year!=""& !is.na(Birth.Year)][,.(Count=.N), by=Birth.Year][order(-Count)]
+head(c.yr,3)
+
+plt6 <-ggplot(data=c.yr, aes(x = Birth.Year, y= Count)) +
+              geom_bar(stat="identity", fill = 'purple')+
+              scale_x_continuous(limits = c(1939, 2019), breaks = seq(1939, 2019, 10))+
+              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+              th1+
+              ggtitle('Histogram for user count by birth year')+
+              labs(x = 'Birth Year', y = 'Count')
+  print(plt6)
+
+```
+
+##Summary:
+The most recent birth year for users is 2016, the earliest birth year is 1885 (which may indicate that some users use the default option) and most common year is 1989. 
+
+Thats it. Thanks for reading!
 
