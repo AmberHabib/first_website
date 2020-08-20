@@ -1,10 +1,10 @@
 ---
-title: "Projects"
+title: "Bikeshare data analysis for Udacity data science nano degree"
 output: html_document
 ---
 
 This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(data.table)
 library(stringr)

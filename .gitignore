@@ -1,5 +1,5 @@
-Data
-site_libs
-projects_files
-Rhistory
+Data/
+site_libs/
+projects_files/
+.Rhistory
 *.csv
