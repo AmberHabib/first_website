@@ -1,5 +1,8 @@
 Data/
 site_libs/
-projects_files/
 .Rhistory
 *.csv
+.Rproj.user
+.RData
+projects_files/
+cv/

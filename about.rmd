@@ -2,11 +2,12 @@
 title: "About Me"
 ---
 
-- __Name:__ Amber Ahmed
-- __Ocupation:__ Engineer
-- __Hobbies:__ reading, watercolor, travel. 
-
-I am a Chemical Engineer, and I have enjoyed doing data analysis and visualization projects for past employers. Currently, I am happily employed ONLY as the mother to two most adorable children (ages 1 and 6) and as wife to the smartest man alive. Life is good. 
 
 
-__Credit__ This website is built using R markdown. The full tutorial is located [here](https://livefreeordichotomize.com/2017/08/08/how-to-make-an-rmarkdown-website/)
+Hi! I am Amber. I have studied Chemical Engineering and I have worked as a process engineer for ~ 3 years. My favorite parts of the job always involved some kind of data wrangling (cleanup, visualization, analysis). On my website, I hope to post my projects and learnings as I work on expanding my data science toolkit. 
+Currently, I am happily employed ONLY as the mother to two most adorable children (ages 1 and 6) and as wife to the smartest man alive. Life is good. 
+
+
+__CV__ If you want to learn more about my education and work experience, my [full CV is located here](https://amberahmedcv.netlify.app/)
+
+
