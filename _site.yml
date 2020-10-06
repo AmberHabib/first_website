@@ -17,7 +17,7 @@ navbar:
         - text: "Popular times of travel"
           href: bikeshare_populartraveltimes.html
         - text: "Trip duration and user info"
-          href: bikeshare_populartraveltimes.html
+          href: bikeshare_tripduration.html
         
   right:
     - icon: fa-envelope
