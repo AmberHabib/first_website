@@ -11,17 +11,20 @@
 
 
 
-<title>Bikeshare data analysis for Udacity data science nano degree</title>
+<title>Bikeshare_popular travel times</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -103,33 +106,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 60px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h2 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 65px;
-  margin-top: -65px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .dropdown-submenu {
   position: relative;
@@ -246,6 +249,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -278,12 +284,35 @@ $(document).ready(function () {
 <li>
   <a href="about.html">About Me</a>
 </li>
-<li>
-  <a href="Projects.html">Projects</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Process Engineering Data</li>
+    <li>
+      <a href="ggqc_test.html">Control charts with ggQC</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Bikeshare data</li>
+    <li>
+      <a href="bikeshare_populartraveltimes.html">Popular times of travel</a>
+    </li>
+    <li>
+      <a href="bikeshare_populartraveltimes.html">Trip duration and user info</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="mailto:amber.m.ahmed@gmail.com">
+    <span class="fa fa-envelope"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -291,36 +320,28 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Bikeshare data analysis for Udacity data science nano degree</h1>
+
+<h1 class="title toc-ignore">Bikeshare_popular travel times</h1>
 
 </div>
 
 
 <p>This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.</p>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
-library(data.table)</code></pre>
-<pre><code>## data.table 1.12.8 using 2 threads (see ?getDTthreads).  Latest news: r-datatable.com</code></pre>
-<pre class="r"><code>library(stringr)
-library(ggplot2)
-
-
-#plot background theme, chosen by my 6 yr old :)
-th1&lt;- theme(
-              panel.background = element_rect(fill = &quot;pink&quot;,
-                                colour = &quot;pink&quot;,
-                                size = 0.5, linetype = &quot;solid&quot;),
-              panel.grid.major = element_line(size = 0.5, linetype = &#39;solid&#39;,
-                                colour = &quot;white&quot;), 
-              panel.grid.minor = element_line(size = 0.25, linetype = &#39;solid&#39;,
-                                colour = &quot;white&quot;))
-# color palette vector for line plots
-c.palette &lt;- c(&quot;purple&quot;, &quot;magenta&quot;, &quot;turquoise&quot;)</code></pre>
 <div id="question-1-popular-times-of-travel" class="section level1">
 <h1>Question 1: Popular times of travel</h1>
 <p>What is the most common month ? What is the most common day of week? What is the most common hour of day?</p>
-<p>##Step a) Data Cleaning and organization - In the first R code chunk, I used data.table library to read only the columns of interest, and to create a new column ‘City’ (fill it with values Chicago, Newyork and Washington respectively) for all three data sets. I then combined all of the data tables into one using rbind. Finally, I used the stringr replace all function for replacing the spaces in column names with a dot. This wrangling work resulted in creating one table for creating all of the summaries and visualizations needed to answer this question.</p>
+<div id="step-a-data-cleaning-and-organization--" class="section level2">
+<h2>Step a) Data Cleaning and organization -</h2>
+<p>In the first R code chunk, I used data.table library to read only the columns of interest, and to create a new column ‘City’ (fill it with values Chicago, Newyork and Washington respectively) for all three data sets. I then combined all of the data tables into one using rbind. Finally, I used the stringr replace all function for replacing the spaces in column names with a dot. This wrangling work resulted in creating one table for creating all of the summaries and visualizations needed to answer this question.</p>
 <pre class="r"><code>ch &lt;- fread(&quot;Data/chicago.csv&quot;, select = c(2,3,4))         # read csv as data table
 ch[,&quot;City&quot;:=&quot;Chicago&quot;]
 
@@ -335,16 +356,13 @@ names(dt) &lt;- str_replace_all(names(dt), c(&quot; &quot;=&quot;.&quot;))   #re
 strt &lt;- as.POSIXct(dt$Start.Time)                     #POSIX for timestamps as calendar times
 dt[, &quot;start.month&quot; := strftime(strt, &quot;%b&quot;)]           #extracting month from timestamp and storing in a new column start.month
 dt[, &quot;start.DOW&quot; := strftime(strt, &quot;%a&quot;)]             #extracting day of week from timestamp and storing in a new column start.DOW
-dt[, &quot;start.hourofday&quot; := strftime(strt, &quot;%H&quot;)]       #extracting hour of day from timestamp and storing in a new column start.hourofday
-head(dt)</code></pre>
-<pre><code>##             Start.Time            End.Time Trip.Duration    City start.month start.DOW start.hourofday
-## 1: 2017-06-23 15:09:32 2017-06-23 15:14:53           321 Chicago         Jun       Fri              15
-## 2: 2017-05-25 18:19:03 2017-05-25 18:45:53          1610 Chicago         May       Thu              18
-## 3: 2017-01-04 08:27:49 2017-01-04 08:34:45           416 Chicago         Jan       Wed              08
-## 4: 2017-03-06 13:49:38 2017-03-06 13:55:28           350 Chicago         Mar       Mon              13
-## 5: 2017-01-17 14:53:07 2017-01-17 15:02:01           534 Chicago         Jan       Tue              14
-## 6: 2017-06-26 09:01:20 2017-06-26 09:11:06           586 Chicago         Jun       Mon              09</code></pre>
-<p>##Step b) Functions for creating summaries i) Get.Most.Common –&gt; returns the most common (i.e. the highest count) metric combined for the three cities (overall) as well as broken down per city (grouped)</p>
+dt[, &quot;start.hourofday&quot; := strftime(strt, &quot;%H&quot;)]       #extracting hour of day from timestamp and storing in a new column start.hourofday</code></pre>
+</div>
+<div id="step-b-functions-for-creating-summaries" class="section level2">
+<h2>Step b) Functions for creating summaries</h2>
+<ol style="list-style-type: lower-roman">
+<li>Get.Most.Common –&gt; returns the most common (i.e. the highest count) metric combined for the three cities (overall) as well as broken down per city (grouped)</li>
+</ol>
 <pre class="r"><code>Get.Most.Common &lt;- function(metric, grp.by){
       usr_input1&lt;- metric
       usr_input2&lt;- grp.by
@@ -366,9 +384,8 @@ head(dt)</code></pre>
       return(result)
      
 }
-print(&quot;-----Most common Month-----&quot;)</code></pre>
-<pre><code>## [1] &quot;-----Most common Month-----&quot;</code></pre>
-<pre class="r"><code>Get.Most.Common(dt$start.month, dt$City)</code></pre>
+
+Get.Most.Common(dt$start.month, dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.month Overall_ Count
 ## 1:         Jun         242442
@@ -378,8 +395,6 @@ print(&quot;-----Most common Month-----&quot;)</code></pre>
 ## 1:    Chicago         Jun          98081
 ## 2:    Newyork         Jun          76022
 ## 3: Washington         Jun          68339</code></pre>
-<pre class="r"><code>print(&quot;-----Most common day of the week-----&quot;)</code></pre>
-<pre><code>## [1] &quot;-----Most common day of the week-----&quot;</code></pre>
 <pre class="r"><code>Get.Most.Common(dt$start.DOW, dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.DOW Overall_ Count
@@ -390,8 +405,6 @@ print(&quot;-----Most common Month-----&quot;)</code></pre>
 ## 1:    Chicago       Tue          45912
 ## 2:    Newyork       Wed          52087
 ## 3: Washington       Wed          48156</code></pre>
-<pre class="r"><code>print(&quot;-----Most common hour of the day-----&quot;)</code></pre>
-<pre><code>## [1] &quot;-----Most common hour of the day-----&quot;</code></pre>
 <pre class="r"><code>Get.Most.Common(dt$start.hourofday,dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.hourofday Overall_ Count
@@ -430,7 +443,7 @@ freq.categorical &lt;- function(metric, grp.by){
       #4 (for bygrp)
       p2 &lt;- list(geom_line(size = 1) ,
                 scale_y_continuous(labels = function(x) format(x, scientific = FALSE)),
-                geom_point( size=4, shape=21,fill=&quot;grey&quot;),
+                geom_point( size=4, shape=21,fill=&quot;white&quot;),
                 scale_color_manual(values = c.palette), th1,
                 ggtitle(paste0(&#39;Trend chart for &#39;, txt_usr_input1, &#39; by &#39;, txt_usr_input2)),
                 labs(x = paste0(txt_usr_input1), y = &#39;Count&#39;)
@@ -471,7 +484,7 @@ return(result)
 }
 
 freq.categorical(dt$start.month, dt$City)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-1.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-2.png" width="100%" /></p>
 <pre><code>## $Overall
 ##    metric      N
 ## 1:    Jun 242442
@@ -502,7 +515,7 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 ## 17:    Chicago    Mar 29639
 ## 18:    Chicago    Jan 21809</code></pre>
 <pre class="r"><code>freq.categorical(dt$start.DOW, dt$City)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-3.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-4.png" width="100%" /></p>
 <pre><code>## $Overall
 ##    metric      N
 ## 1:    Sun 114502
@@ -538,7 +551,7 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 ## 21:    Newyork    Sat 33926
 ##         grp.by metric     N</code></pre>
 <pre class="r"><code>freq.categorical(dt$start.hourofday, dt$City)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-3-5.png" width="672" /><img src="projects_files/figure-html/unnamed-chunk-3-6.png" width="672" /></p>
+<p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-5.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-6.png" width="100%" /></p>
 <pre><code>## $Overall
 ##     metric     N
 ##  1:     08 81734
@@ -642,118 +655,15 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 ## 71:    Newyork     03   446
 ## 72:    Chicago     03   372
 ##         grp.by metric     N</code></pre>
-<p>##Step c) Results summary June is the most common rental month overall, as well as for each of the cities. This may be driven by warm summer temperatures, tourists visitings due to school holidays etc. Wednesday is the most common day for start of the rentals overall. When broken down by the city, we see that wednesday is still the most comon rental start day for New York and washington, but for Chicgo the most common day of retnal start is Tuesday. weekday rentals may be higher due to workers commuting to work. Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm being the most popular times for travel. This, again is likely due to the workers commuting to and from work at these hours. Trend by city shows the same dual peaks. The 5:00pm peak for washington is small, which may be due to overnight rentals.</p>
-<p>#Question 2: Trip duration</p>
-<p>What is the total travel time for users in different cities? What is the average travel time for users in different cities?</p>
-<p>##Step a) I used the same data table (dt) created in question 1 step a. The below code generates a summary table, a plot for total travel time by city and a plot for average travel time by city in minutes. Note: I could have used the available trip.duration column for this analysis, instead of calculating the duration (start time - end time). This helped me learn more, and output is in minutes opposed to Trip.Duration column which shows the time recorded in seconds.</p>
-<pre class="r"><code>t1 &lt;- strptime(dt$Start.Time, &quot;%Y-%m-%d %H:%M:%OS&quot;) # t1 is date time object containig start time
-t2&lt;- strptime(dt$End.Time, &quot;%Y-%m-%d %H:%M:%OS&quot;)   #t2 is date time object containing end time
-dt[, &quot;Duration&quot; := as.numeric(t2-t1)]   # creating a new column &#39;duration&#39; which is difference between start and end times in mins
-summary.trip.duration &lt;- dt [, .(Avg.time.min = mean(Duration), #generating summary table by city
-                              total.time.min = sum(Duration),
-                             Count = .N), 
-                             by=City
-                            ][ order(-total.time.min) ]
-print(summary.trip.duration)</code></pre>
-<pre><code>##          City Avg.time.min total.time.min  Count
-## 1:    Chicago     15.60399        4681196 300000
-## 2:    Newyork     15.00305        4500916 300000
-## 3: Washington     12.41812        3725437 300000</code></pre>
-<pre class="r"><code>library(ggplot2)                   
-plt3&lt;- ggplot(data = summary.trip.duration, aes(x=City, y=total.time.min)) + #generating plot for total time
-        geom_bar(stat = &quot;identity&quot;, fill = &quot;purple&quot;)+
-          ggtitle(paste0(&#39;Histogram for total tavel time&#39;))+
-          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
-          th1+labs(y = &#39;total travel time in minutes&#39;)
-print(plt3)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>plt4 &lt;- ggplot(data = summary.trip.duration, aes(x=City, y=Avg.time.min)) + #generating plot for average time
-        geom_bar(stat = &quot;identity&quot;, fill = &quot;purple&quot;)+
-          ggtitle(paste0(&#39;Histogram for average tavel time in minutes&#39;))+
-          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
-          th1+labs(y = &#39;Average travel time in minutes&#39;)
-print(plt4)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-<p>##Step b) Summary: Average travel time is shortest for Washington at 12.41 min and longest for Chicago at 15.60 min. Total travel time is highest for chicago at &gt; 4.6 million minutes, closely folowed by NY at ~4.5 million minutes. Washington shows lowest system utilization for all three cities at ~3.7million minutes usage for the 6 month period.</p>
-<p>#Question 3: User info</p>
-<p>What are the counts of each user type? What are the counts of each gender (only available for NYC and Chicago)? What are the earliest, most recent, most common year of birth (only available for NYC and Chicago)?</p>
-<p>##Step a) Counts for each user type, counts for each gender overall, and counts for each gender broken down by city. Again used the data.table library functions for creating summaries and ggplot for visualizations.</p>
-<pre class="r"><code>ch2 &lt;- fread(&#39;Data/chicago.csv&#39;, select=c(7,8,9))
-ch2[,&quot;City&quot;:= &quot;Chicago&quot;]
-
-ny2 &lt;- fread(&#39;Data/new-york-city.csv&#39;, select = c(7,8,9))
-ny2[,&quot;City&quot;:= &quot;Newyork&quot;]
-
-wa2 &lt;- fread(&#39;Data/washington.csv&#39;, select = c(7))
-wa2[,&quot;City&quot;:= &quot;Washington&quot;]
-
-dt2&lt;- rbind(ch2,ny2,wa2, fill = TRUE)  
-names(dt2) &lt;- str_replace_all(names(dt2), c(&quot; &quot;=&quot;.&quot;))   #replace empty space in column name with a .
-
-count.user.type &lt;- dt2[User.Type !=&quot;&quot;][,.(Count = .N), by =User.Type][order(-Count)]
-print(&quot;-------Counts of each user type---------&quot;)</code></pre>
-<pre><code>## [1] &quot;-------Counts of each user type---------&quot;</code></pre>
-<pre class="r"><code>print(count.user.type)</code></pre>
-<pre><code>##     User.Type  Count
-## 1: Subscriber 728824
-## 2:   Customer 170483
-## 3:  Dependent      1</code></pre>
-<pre class="r"><code>gs &lt;- dt2[Gender!=&quot;&quot;&amp; !is.na(Gender)][,.(Count=.N), by=Gender]
-gs.bycity&lt;- dt2[Gender!=&quot;&quot;&amp; !is.na(Gender)][,.(Count=.N), by=.(Gender,City)]
-print(&quot;-------counts of each gender---------&quot;)</code></pre>
-<pre><code>## [1] &quot;-------counts of each gender---------&quot;</code></pre>
-<pre class="r"><code>print(gs)</code></pre>
-<pre><code>##    Gender  Count
-## 1:   Male 385198
-## 2: Female 124541</code></pre>
-<pre class="r"><code>print(&quot;-------counts of each gender by city---------&quot;)</code></pre>
-<pre><code>## [1] &quot;-------counts of each gender by city---------&quot;</code></pre>
-<pre class="r"><code>print(gs.bycity)</code></pre>
-<pre><code>##    Gender    City  Count
-## 1:   Male Chicago 181190
-## 2: Female Chicago  57758
-## 3:   Male Newyork 204008
-## 4: Female Newyork  66783</code></pre>
-<pre class="r"><code>plt5 &lt;-ggplot(data=gs.bycity, aes(x = Gender, y= Count, fill = City)) +
-              geom_bar(stat=&quot;identity&quot;, width=.5, position = &quot;dodge&quot;)+
-              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
-              th1+ scale_fill_manual(values = c.palette)+
-              ggtitle(&#39;Histogram for gender count by city&#39;)+
-              labs(x = &#39;Gender&#39;, y = &#39;Count&#39;)
-  print(plt5)</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>##Summary: The most common user type is subscriber. More male users overall than female. When looking at comparison by city, both cities individually have more male users.</p>
-<p>##Step b) Earliest, most recent and most common year of birth calculation:</p>
-<pre class="r"><code>#order data table by birth year ascending - get most recent year
-r.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,(max(Birth.Year))]
-print(paste0(&quot;The most recent birth year is &quot;,r.yr))</code></pre>
-<pre><code>## [1] &quot;The most recent birth year is 2016&quot;</code></pre>
-<pre class="r"><code>#order data table by birth year descending - get earliest year
-e.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,(min(Birth.Year))]
-print(paste0(&quot;The earliest birth year is &quot;,e.yr))</code></pre>
-<pre><code>## [1] &quot;The earliest birth year is 1885&quot;</code></pre>
-<pre class="r"><code>#count number of occurences of each birht year, and order by count descending to get the most common year on top.
-c.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,.(Count=.N), by=Birth.Year][order(-Count)]
-head(c.yr,3)</code></pre>
-<pre><code>##    Birth.Year Count
-## 1:       1989 25792
-## 2:       1988 23440
-## 3:       1990 23187</code></pre>
-<pre class="r"><code>plt6 &lt;-ggplot(data=c.yr, aes(x = Birth.Year, y= Count)) +
-              geom_bar(stat=&quot;identity&quot;, fill = &#39;purple&#39;)+
-              scale_x_continuous(limits = c(1939, 2019), breaks = seq(1939, 2019, 10))+
-              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
-              th1+
-              ggtitle(&#39;Histogram for user count by birth year&#39;)+
-              labs(x = &#39;Birth Year&#39;, y = &#39;Count&#39;)
-  print(plt6)</code></pre>
-<pre><code>## Warning: Removed 31 rows containing missing values (position_stack).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_bar).</code></pre>
-<p><img src="projects_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>##Summary: The most recent birth year for users is 2016, the earliest birth year is 1885 (which may indicate that some users use the default option) and most common year is 1989.</p>
-<p>Thats it. Thanks for reading!</p>
+</div>
+<div id="step-c-results-summary" class="section level2">
+<h2>Step c) Results summary</h2>
+<p>June is the most common rental month overall, as well as for each of the cities. This may be driven by warm summer temperatures, tourists visitings due to school holidays etc. Wednesday is the most common day for start of the rentals overall. When broken down by the city, we see that wednesday is still the most comon rental start day for New York and washington, but for Chicgo the most common day of retnal start is Tuesday. weekday rentals may be higher due to workers commuting to work. Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm being the most popular times for travel. This, again is likely due to the workers commuting to and from work at these hours. Trend by city shows the same dual peaks. The 5:00pm peak for washington is small, which may be due to overnight rentals.</p>
+</div>
 </div>
 
+
+Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
 
 
 
@@ -787,6 +697,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

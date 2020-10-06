@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Trip duration and user info</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Ambers Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Process Engineering Data</li>
+    <li>
+      <a href="ggqc_test.html">Control charts with ggQC</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Bikeshare data</li>
+    <li>
+      <a href="bikeshare_populartraveltimes.html">Popular times of travel</a>
+    </li>
+    <li>
+      <a href="bikeshare_populartraveltimes.html">Trip duration and user info</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:amber.m.ahmed@gmail.com">
+    <span class="fa fa-envelope"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Trip duration and user info</h1>
+
+</div>
+
+
+<p>This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.</p>
+<div id="question-2-trip-duration" class="section level1">
+<h1>Question 2: Trip duration</h1>
+<p>What is the total travel time for users in different cities? What is the average travel time for users in different cities?</p>
+<div id="step-a" class="section level2">
+<h2>Step a)</h2>
+<p>I used the same data table (dt) created in question 1 step a. The below code generates a summary table, a plot for total travel time by city and a plot for average travel time by city in minutes. Note: I could have used the available trip.duration column for this analysis, instead of calculating the duration (start time - end time). This helped me learn more, and output is in minutes opposed to Trip.Duration column which shows the time recorded in seconds.</p>
+<pre class="r"><code>ch &lt;- fread(&quot;Data/chicago.csv&quot;, select = c(2,3,4))         # read csv as data table
+ch[,&quot;City&quot;:=&quot;Chicago&quot;]
+
+ny &lt;- fread(&#39;Data/new-york-city.csv&#39;, select = c(2,3,4))
+ny[,&quot;City&quot;:= &quot;Newyork&quot;]
+
+wa &lt;- fread(&#39;Data/washington.csv&#39;, select = c(2,3,4))
+wa[,&quot;City&quot;:= &quot;Washington&quot;]
+
+dt &lt;- rbind(ch,ny,wa)                                 #combine data tables
+names(dt) &lt;- str_replace_all(names(dt), c(&quot; &quot;=&quot;.&quot;))   #replace empty space in column name with a .
+strt &lt;- as.POSIXct(dt$Start.Time)                     #POSIX for timestamps as calendar times
+dt[, &quot;start.month&quot; := strftime(strt, &quot;%b&quot;)]           #extracting month from timestamp and storing in a new column start.month
+dt[, &quot;start.DOW&quot; := strftime(strt, &quot;%a&quot;)]             #extracting day of week from timestamp and storing in a new column start.DOW
+dt[, &quot;start.hourofday&quot; := strftime(strt, &quot;%H&quot;)]       #extracting hour of day from timestamp and storing in a new column start.hourofday
+
+t1 &lt;- strptime(dt$Start.Time, &quot;%Y-%m-%d %H:%M:%OS&quot;) # t1 is date time object containig start time
+t2&lt;- strptime(dt$End.Time, &quot;%Y-%m-%d %H:%M:%OS&quot;)   #t2 is date time object containing end time
+dt[, &quot;Duration&quot; := as.numeric(t2-t1)]   # creating a new column &#39;duration&#39; which is difference between start and end times in mins
+summary.trip.duration &lt;- dt [, .(Avg.time.min = mean(Duration), #generating summary table by city
+                              total.time.min = sum(Duration),
+                             Count = .N), 
+                             by=City
+                            ][ order(-total.time.min) ]
+print(summary.trip.duration)</code></pre>
+<pre><code>##          City Avg.time.min total.time.min  Count
+## 1:    Chicago     15.60399        4681196 300000
+## 2:    Newyork     15.00305        4500916 300000
+## 3: Washington     12.41812        3725437 300000</code></pre>
+<pre class="r"><code>library(ggplot2)                   
+plt3&lt;- ggplot(data = summary.trip.duration, aes(x=City, y=total.time.min)) + #generating plot for total time
+        geom_bar(stat = &quot;identity&quot;, fill = &quot;purple&quot;)+
+          ggtitle(paste0(&#39;Histogram for total tavel time&#39;))+
+          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+          th1+labs(y = &#39;total travel time in minutes&#39;)
+print(plt3)</code></pre>
+<p><img src="bikeshare_tripduration_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>plt4 &lt;- ggplot(data = summary.trip.duration, aes(x=City, y=Avg.time.min)) + #generating plot for average time
+        geom_bar(stat = &quot;identity&quot;, fill = &quot;purple&quot;)+
+          ggtitle(paste0(&#39;Histogram for average tavel time in minutes&#39;))+
+          scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+          th1+labs(y = &#39;Average travel time in minutes&#39;)
+print(plt4)</code></pre>
+<p><img src="bikeshare_tripduration_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+</div>
+<div id="step-b-summary" class="section level2">
+<h2>Step b) Summary:</h2>
+<p>Average travel time is shortest for Washington at 12.41 min and longest for Chicago at 15.60 min. Total travel time is highest for chicago at &gt; 4.6 million minutes, closely folowed by NY at ~4.5 million minutes. Washington shows lowest system utilization for all three cities at ~3.7million minutes usage for the 6 month period.</p>
+</div>
+</div>
+<div id="question-3-user-info" class="section level1">
+<h1>Question 3: User info</h1>
+<p>What are the counts of each user type? What are the counts of each gender (only available for NYC and Chicago)? What are the earliest, most recent, most common year of birth (only available for NYC and Chicago)?</p>
+<div id="step-a-1" class="section level2">
+<h2>Step a)</h2>
+<p>Counts for each user type, counts for each gender overall, and counts for each gender broken down by city. Again used the data.table library functions for creating summaries and ggplot for visualizations.</p>
+<pre class="r"><code>ch2 &lt;- fread(&#39;Data/chicago.csv&#39;, select=c(7,8,9))
+ch2[,&quot;City&quot;:= &quot;Chicago&quot;]
+
+ny2 &lt;- fread(&#39;Data/new-york-city.csv&#39;, select = c(7,8,9))
+ny2[,&quot;City&quot;:= &quot;Newyork&quot;]
+
+wa2 &lt;- fread(&#39;Data/washington.csv&#39;, select = c(7))
+wa2[,&quot;City&quot;:= &quot;Washington&quot;]
+
+dt2&lt;- rbind(ch2,ny2,wa2, fill = TRUE)  
+names(dt2) &lt;- str_replace_all(names(dt2), c(&quot; &quot;=&quot;.&quot;))   #replace empty space in column name with a .
+
+count.user.type &lt;- dt2[User.Type !=&quot;&quot;][,.(Count = .N), by =User.Type][order(-Count)]
+print(&quot;-------Counts of each user type---------&quot;)</code></pre>
+<pre><code>## [1] &quot;-------Counts of each user type---------&quot;</code></pre>
+<pre class="r"><code>print(count.user.type)</code></pre>
+<pre><code>##     User.Type  Count
+## 1: Subscriber 728824
+## 2:   Customer 170483
+## 3:  Dependent      1</code></pre>
+<pre class="r"><code>gs &lt;- dt2[Gender!=&quot;&quot;&amp; !is.na(Gender)][,.(Count=.N), by=Gender]
+gs.bycity&lt;- dt2[Gender!=&quot;&quot;&amp; !is.na(Gender)][,.(Count=.N), by=.(Gender,City)]
+print(&quot;-------counts of each gender---------&quot;)</code></pre>
+<pre><code>## [1] &quot;-------counts of each gender---------&quot;</code></pre>
+<pre class="r"><code>print(gs)</code></pre>
+<pre><code>##    Gender  Count
+## 1:   Male 385198
+## 2: Female 124541</code></pre>
+<pre class="r"><code>print(&quot;-------counts of each gender by city---------&quot;)</code></pre>
+<pre><code>## [1] &quot;-------counts of each gender by city---------&quot;</code></pre>
+<pre class="r"><code>print(gs.bycity)</code></pre>
+<pre><code>##    Gender    City  Count
+## 1:   Male Chicago 181190
+## 2: Female Chicago  57758
+## 3:   Male Newyork 204008
+## 4: Female Newyork  66783</code></pre>
+<pre class="r"><code>plt5 &lt;-ggplot(data=gs.bycity, aes(x = Gender, y= Count, fill = City)) +
+              geom_bar(stat=&quot;identity&quot;, width=.5, position = &quot;dodge&quot;)+
+              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+              th1+ scale_fill_manual(values = c.palette)+
+              ggtitle(&#39;Histogram for gender count by city&#39;)+
+              labs(x = &#39;Gender&#39;, y = &#39;Count&#39;)
+  print(plt5)</code></pre>
+<p><img src="bikeshare_tripduration_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary:</h2>
+<p>The most common user type is subscriber. More male users overall than female. When looking at comparison by city, both cities individually have more male users.</p>
+</div>
+<div id="step-b" class="section level2">
+<h2>Step b)</h2>
+<p>Earliest, most recent and most common year of birth calculation:</p>
+<pre class="r"><code>#order data table by birth year ascending - get most recent year
+r.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,(max(Birth.Year))]
+print(paste0(&quot;The most recent birth year is &quot;,r.yr))</code></pre>
+<pre><code>## [1] &quot;The most recent birth year is 2016&quot;</code></pre>
+<pre class="r"><code>#order data table by birth year descending - get earliest year
+e.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,(min(Birth.Year))]
+print(paste0(&quot;The earliest birth year is &quot;,e.yr))</code></pre>
+<pre><code>## [1] &quot;The earliest birth year is 1885&quot;</code></pre>
+<pre class="r"><code>#count number of occurences of each birht year, and order by count descending to get the most common year on top.
+c.yr &lt;- dt2[Birth.Year!=&quot;&quot;&amp; !is.na(Birth.Year)][,.(Count=.N), by=Birth.Year][order(-Count)]
+head(c.yr,3)</code></pre>
+<pre><code>##    Birth.Year Count
+## 1:       1989 25792
+## 2:       1988 23440
+## 3:       1990 23187</code></pre>
+<pre class="r"><code>plt6 &lt;-ggplot(data=c.yr, aes(x = Birth.Year, y= Count)) +
+              geom_bar(stat=&quot;identity&quot;, fill = &#39;purple&#39;)+
+              scale_x_continuous(limits = c(1939, 2019), breaks = seq(1939, 2019, 10))+
+              scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+              th1+
+              ggtitle(&#39;Histogram for user count by birth year&#39;)+
+              labs(x = &#39;Birth Year&#39;, y = &#39;Count&#39;)
+  print(plt6)</code></pre>
+<pre><code>## Warning: Removed 31 rows containing missing values (position_stack).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_bar).</code></pre>
+<p><img src="bikeshare_tripduration_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="summary-1" class="section level2">
+<h2>Summary:</h2>
+<p>The most recent birth year for users is 2016, the earliest birth year is 1885 (which may indicate that some users use the default option) and most common year is 1989.</p>
+<p>Thats it. Thanks for reading!</p>
+</div>
+</div>
+
+
+Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

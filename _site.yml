@@ -8,9 +8,25 @@ navbar:
     - text: "About Me"
       href: about.html
     - text: "Projects"
-      href: Projects.html
+      menu:
+        - text: "Process Engineering Data"
+        - text: "Control charts with ggQC"
+          href: ggqc_test.html
+        - text: "---------"
+        - text: "Bikeshare data"
+        - text: "Popular times of travel"
+          href: bikeshare_populartraveltimes.html
+        - text: "Trip duration and user info"
+          href: bikeshare_populartraveltimes.html
+        
+  right:
+    - icon: fa-envelope
+      href: "mailto:amber.m.ahmed@gmail.com" 
       
 output:
   html_document:
-    theme: flatly
+    theme: cosmo
+    highlight: textmate
+    include:
+      after_body: footer.html
     css: style.css
