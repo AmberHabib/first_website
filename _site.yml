@@ -10,8 +10,8 @@ navbar:
     - text: "Projects"
       menu:
         - text: "Process Engineering Data"
-        - text: "Control charts with ggQC"
-          href: ggqc_test.html
+        - text: "Control charts Demo"
+          href: Controlchartdemo.html
         - text: "---------"
         - text: "Bikeshare data"
         - text: "Popular times of travel"
@@ -19,14 +19,11 @@ navbar:
         - text: "Trip duration and user info"
           href: bikeshare_tripduration.html
         
-  right:
-    - icon: fa-envelope
-      href: "mailto:amber.m.ahmed@gmail.com" 
       
 output:
   html_document:
     theme: cosmo
     highlight: textmate
-    include:
+    includes:
       after_body: footer.html
     css: style.css

@@ -23,8 +23,6 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -293,7 +291,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Process Engineering Data</li>
     <li>
-      <a href="ggqc_test.html">Control charts with ggQC</a>
+      <a href="Controlchartdemo.html">Control charts Demo</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Bikeshare data</li>
@@ -307,12 +305,7 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="mailto:amber.m.ahmed@gmail.com">
-    <span class="fa fa-envelope"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -336,7 +329,6 @@ $(document).ready(function () {
 
 
 <p>This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.</p>
-<pre><code>## data.table 1.12.8 using 2 threads (see ?getDTthreads).  Latest news: r-datatable.com</code></pre>
 <div id="question-1-popular-times-of-travel" class="section level1">
 <h1>Question 1: Popular times of travel</h1>
 <p>What is the most common month ? What is the most common day of week? What is the most common hour of day?</p>
@@ -664,7 +656,17 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 </div>
 
 
-Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+    <a href="https://twitter.com/Statsw_eng" class="fa fa-twitter"></a>
+    <a href="https://www.linkedin.com/in/amberahmed/" class="fa fa-linkedin"></a>
+    <a href="https://github.com/AmberHabib?tab=repositories" class="fa fa-github"></a>
+</p>
+<p style="text-align: center;"><span style="color: #000000;"><em>amber.m.ahmed@gmail.com</em></span></p>
+<p style="text-align: center;">Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
 
 
 
