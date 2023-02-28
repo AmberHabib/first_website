@@ -1,9 +1,17 @@
 ---
-title: "Control Chart Demo"
 output:
   html_document:
     code_folding: hide
 ---
+
+-----
+$~$
+$~$
+$~$
+$~$
+
+
+## Control Chart Demo
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
