@@ -1,15 +1,11 @@
 ---
 title: "About Me"
 ---
-
-
-
-Hi! I am Amber. I have studied Chemical Engineering and I have worked as a process engineer for ~ 3 years. My favorite parts of the job always involved some kind of data wrangling (cleanup, visualization, analysis). On my website, I hope to post my projects and learnings as I work on expanding my data science toolkit. 
-Currently, I am happily employed ONLY as the mother to two most adorable children (ages 1 and 6) and as wife to the smartest man alive. Life is good. 
-
+![my_pic](my_pic.jpg){width=25% height=50%}
+Hi! I am Amber. I am a Masters student in Data Science at UT Austin. Thank you for taking the time to visit my website.  
 
 __CV__ If you want to learn more about my education and work experience, my [full CV is located here](https://amberahmedcv.netlify.app/)
 
-We visited NY in March 2020; admittedly naive :$
-![](about.jpg){width=40%}
+
+This website has been created using R markdown. For initial set up, I found [this](https://livefreeordichotomize.com/2017/08/08/how-to-make-an-rmarkdown-website/) tutorial to be extremely helpful. I also used R markdown site documentation located [here](https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html).
 

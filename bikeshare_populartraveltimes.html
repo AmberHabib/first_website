@@ -13,23 +13,37 @@
 
 <title>Bikeshare_popular travel times</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -42,32 +56,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -78,10 +68,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -98,40 +84,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -159,7 +121,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -171,7 +133,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -182,10 +144,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -197,7 +172,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -267,12 +241,12 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Ambers Website</a>
+      <a class="navbar-brand" href="index.html">Amber Ahmed</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -283,23 +257,29 @@ $(document).ready(function () {
   <a href="about.html">About Me</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Projects
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Process Engineering Data</li>
+    <li class="dropdown-header">Class Projects</li>
     <li>
-      <a href="Controlchartdemo.html">Control charts Demo</a>
+      <a href="oregon_wildfires.html">Oregon Wildfires</a>
     </li>
     <li class="divider"></li>
-    <li class="dropdown-header">Bikeshare data</li>
+    <li class="dropdown-header">Personal Projects</li>
+    <li>
+      <a href="fibonacci_spirals.html">Fibonacci Spirals</a>
+    </li>
     <li>
       <a href="bikeshare_populartraveltimes.html">Popular times of travel</a>
     </li>
     <li>
       <a href="bikeshare_tripduration.html">Trip duration and user info</a>
+    </li>
+    <li>
+      <a href="Controlchartdemo.html">Control charts Demo</a>
     </li>
   </ul>
 </li>
@@ -311,11 +291,11 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -328,13 +308,24 @@ $(document).ready(function () {
 </div>
 
 
-<p>This project was completed as a part of the udacity data science with R nano degree program. The project goal was to formulate and answer some questions using the bikeshare data from three US cities.</p>
+<p>This project was completed as a part of the udacity data science with
+R nano degree program. The project goal was to formulate and answer some
+questions using the bikeshare data from three US cities.</p>
 <div id="question-1-popular-times-of-travel" class="section level1">
 <h1>Question 1: Popular times of travel</h1>
-<p>What is the most common month ? What is the most common day of week? What is the most common hour of day?</p>
-<div id="step-a-data-cleaning-and-organization--" class="section level2">
+<p>What is the most common month ? What is the most common day of week?
+What is the most common hour of day?</p>
+<div id="step-a-data-cleaning-and-organization--"
+class="section level2">
 <h2>Step a) Data Cleaning and organization -</h2>
-<p>In the first R code chunk, I used data.table library to read only the columns of interest, and to create a new column ‘City’ (fill it with values Chicago, Newyork and Washington respectively) for all three data sets. I then combined all of the data tables into one using rbind. Finally, I used the stringr replace all function for replacing the spaces in column names with a dot. This wrangling work resulted in creating one table for creating all of the summaries and visualizations needed to answer this question.</p>
+<p>In the first R code chunk, I used data.table library to read only the
+columns of interest, and to create a new column ‘City’ (fill it with
+values Chicago, Newyork and Washington respectively) for all three data
+sets. I then combined all of the data tables into one using rbind.
+Finally, I used the stringr replace all function for replacing the
+spaces in column names with a dot. This wrangling work resulted in
+creating one table for creating all of the summaries and visualizations
+needed to answer this question.</p>
 <pre class="r"><code>ch &lt;- fread(&quot;Data/chicago.csv&quot;, select = c(2,3,4))         # read csv as data table
 ch[,&quot;City&quot;:=&quot;Chicago&quot;]
 
@@ -351,10 +342,13 @@ dt[, &quot;start.month&quot; := strftime(strt, &quot;%b&quot;)]           #extra
 dt[, &quot;start.DOW&quot; := strftime(strt, &quot;%a&quot;)]             #extracting day of week from timestamp and storing in a new column start.DOW
 dt[, &quot;start.hourofday&quot; := strftime(strt, &quot;%H&quot;)]       #extracting hour of day from timestamp and storing in a new column start.hourofday</code></pre>
 </div>
-<div id="step-b-functions-for-creating-summaries" class="section level2">
+<div id="step-b-functions-for-creating-summaries"
+class="section level2">
 <h2>Step b) Functions for creating summaries</h2>
 <ol style="list-style-type: lower-roman">
-<li>Get.Most.Common –&gt; returns the most common (i.e. the highest count) metric combined for the three cities (overall) as well as broken down per city (grouped)</li>
+<li>Get.Most.Common –&gt; returns the most common (i.e. the highest
+count) metric combined for the three cities (overall) as well as broken
+down per city (grouped)</li>
 </ol>
 <pre class="r"><code>Get.Most.Common &lt;- function(metric, grp.by){
       usr_input1&lt;- metric
@@ -381,35 +375,39 @@ dt[, &quot;start.hourofday&quot; := strftime(strt, &quot;%H&quot;)]       #extra
 Get.Most.Common(dt$start.month, dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.month Overall_ Count
-## 1:         Jun         242442
+## 1:         Jun         241060
 ## 
 ## $`Most Common Grouped`
 ##          City start.month Grouped_ Count
-## 1:    Chicago         Jun          98081
-## 2:    Newyork         Jun          76022
-## 3: Washington         Jun          68339</code></pre>
+## 1:    Chicago         Jun          97926
+## 2:    Newyork         Jun          75895
+## 3: Washington         Jun          67239</code></pre>
 <pre class="r"><code>Get.Most.Common(dt$start.DOW, dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.DOW Overall_ Count
-## 1:       Wed         142773
+## 1:       Wed         140682
 ## 
 ## $`Most Common Grouped`
 ##          City start.DOW Grouped_ Count
-## 1:    Chicago       Tue          45912
-## 2:    Newyork       Wed          52087
-## 3: Washington       Wed          48156</code></pre>
+## 1:    Chicago       Tue          46156
+## 2:    Newyork       Wed          52040
+## 3: Washington       Wed          46684</code></pre>
 <pre class="r"><code>Get.Most.Common(dt$start.hourofday,dt$City)</code></pre>
 <pre><code>## $`Most Common Overall`
 ##    start.hourofday Overall_ Count
-## 1:              08          81734
+## 1:              01          72670
 ## 
 ## $`Most Common Grouped`
 ##          City start.hourofday Grouped_ Count
-## 1:    Chicago              17          35992
-## 2:    Newyork              17          30041
-## 3: Washington              08          33019</code></pre>
+## 1:    Chicago              10          32415
+## 2:    Newyork              10          29468
+## 3: Washington              00          32003</code></pre>
 <ol start="2" style="list-style-type: lower-roman">
-<li>Freq.Categorical - creates frequency tables for categorical variable input combined for the three cities (overall) as well as broken down per city (grouped). The frequency table supplements the data visualizations created using ggplot2, if viewers need to take a look at exact numbers for a certain metric.</li>
+<li>Freq.Categorical - creates frequency tables for categorical variable
+input combined for the three cities (overall) as well as broken down per
+city (grouped). The frequency table supplements the data visualizations
+created using ggplot2, if viewers need to take a look at exact numbers
+for a certain metric.</li>
 </ol>
 <pre class="r"><code>#function to calculate frequency tables and plots by metric 
 #1-deparse will get text out of user input - for creating dynamic plot labels
@@ -425,10 +423,10 @@ freq.categorical &lt;- function(metric, grp.by){
       overall &lt;- temp.overall[order(-N)]                #2
       temp.bygrp &lt;- dt[, .N, by=.(grp.by, metric)]
       bygrp &lt;- temp.bygrp[order(dt, -N)] #2
-      c.palette &lt;- c(&quot;purple&quot;, &quot;magenta&quot;, &quot;turquoise&quot;)#3
+      c.palette &lt;- c(&quot;darkblue&quot;, &quot;darkgreen&quot;, &quot;darkred&quot;)
       #4 (for overall)
       p&lt;- list(
-          geom_bar(stat = &quot;identity&quot;, fill = &quot;purple&quot;), 
+          geom_bar(stat = &quot;identity&quot;, fill = &quot;darkblue&quot;), 
           ggtitle(paste0(&#39;Histogram for &#39;, txt_usr_input1)),
           scale_y_continuous(labels = function(x) format(x, scientific = FALSE)),
           th1,labs(x = paste0(txt_usr_input1), y = &#39;Count&#39;)
@@ -480,178 +478,194 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 <p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-1.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-2.png" width="100%" /></p>
 <pre><code>## $Overall
 ##    metric      N
-## 1:    Jun 242442
-## 2:    May 191963
-## 3:    Apr 172455
-## 4:    Feb 105730
-## 5:    Mar 103666
-## 6:    Jan  83744
+## 1:    Jun 241060
+## 2:    May 192159
+## 3:    Apr 172609
+## 4:    Feb 105773
+## 5:    Mar 104074
+## 6:    Jan  84186
+## 7:    Dec    139
 ## 
 ## $Grouped
 ##         grp.by metric     N
-##  1:    Chicago    Jun 98081
-##  2:    Newyork    Jun 76022
-##  3: Washington    Jun 68339
-##  4:    Newyork    May 67015
-##  5:    Chicago    May 66755
-##  6: Washington    Apr 62620
-##  7: Washington    May 58193
-##  8:    Newyork    Apr 58176
-##  9:    Chicago    Apr 51659
-## 10: Washington    Mar 41863
-## 11: Washington    Feb 38932
-## 12:    Newyork    Feb 34741
-## 13:    Newyork    Mar 32164
-## 14:    Chicago    Feb 32057
-## 15:    Newyork    Jan 31882
-## 16: Washington    Jan 30053
-## 17:    Chicago    Mar 29639
-## 18:    Chicago    Jan 21809</code></pre>
+##  1:    Chicago    Jun 97926
+##  2:    Newyork    Jun 75895
+##  3: Washington    Jun 67239
+##  4:    Newyork    May 67051
+##  5:    Chicago    May 66816
+##  6: Washington    Apr 62651
+##  7: Washington    May 58292
+##  8:    Newyork    Apr 58247
+##  9:    Chicago    Apr 51711
+## 10: Washington    Mar 42619
+## 11: Washington    Feb 38975
+## 12:    Newyork    Feb 34751
+## 13:    Chicago    Feb 32047
+## 14:    Newyork    Jan 32012
+## 15:    Newyork    Mar 31983
+## 16: Washington    Jan 30172
+## 17:    Chicago    Mar 29472
+## 18:    Chicago    Jan 22002
+## 19:    Newyork    Dec    61
+## 20: Washington    Dec    52
+## 21:    Chicago    Dec    26
+##         grp.by metric     N</code></pre>
 <pre class="r"><code>freq.categorical(dt$start.DOW, dt$City)</code></pre>
 <p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-3.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-4.png" width="100%" /></p>
 <pre><code>## $Overall
 ##    metric      N
-## 1:    Sun 114502
-## 2:    Mon 126734
-## 3:    Tue 134183
-## 4:    Wed 142773
-## 5:    Thu 134538
-## 6:    Fri 131866
-## 7:    Sat 115404
+## 1:    Sun 115985
+## 2:    Mon 129529
+## 3:    Tue 135083
+## 4:    Wed 140682
+## 5:    Thu 134752
+## 6:    Fri 127429
+## 7:    Sat 116540
 ## 
 ## $Grouped
 ##         grp.by metric     N
-##  1: Washington    Sun 39576
-##  2:    Chicago    Sun 38775
-##  3:    Newyork    Sun 36151
-##  4:    Chicago    Mon 44881
-##  5:    Newyork    Mon 41923
-##  6: Washington    Mon 39930
-##  7:    Chicago    Tue 45912
-##  8: Washington    Tue 44519
-##  9:    Newyork    Tue 43752
-## 10:    Newyork    Wed 52087
-## 11: Washington    Wed 48156
-## 12:    Chicago    Wed 42530
-## 13:    Newyork    Thu 47497
-## 14: Washington    Thu 43946
-## 15:    Chicago    Thu 43095
-## 16:    Newyork    Fri 44664
-## 17:    Chicago    Fri 43922
-## 18: Washington    Fri 43280
-## 19:    Chicago    Sat 40885
-## 20: Washington    Sat 40593
-## 21:    Newyork    Sat 33926
+##  1:    Chicago    Sun 40390
+##  2: Washington    Sun 38582
+##  3:    Newyork    Sun 37013
+##  4:    Chicago    Mon 45291
+##  5:    Newyork    Mon 42348
+##  6: Washington    Mon 41890
+##  7:    Chicago    Tue 46156
+##  8: Washington    Tue 44833
+##  9:    Newyork    Tue 44094
+## 10:    Newyork    Wed 52040
+## 11: Washington    Wed 46684
+## 12:    Chicago    Wed 41958
+## 13:    Newyork    Thu 47234
+## 14: Washington    Thu 44545
+## 15:    Chicago    Thu 42973
+## 16:    Newyork    Fri 43230
+## 17:    Chicago    Fri 42236
+## 18: Washington    Fri 41963
+## 19: Washington    Sat 41503
+## 20:    Chicago    Sat 40996
+## 21:    Newyork    Sat 34041
 ##         grp.by metric     N</code></pre>
 <pre class="r"><code>freq.categorical(dt$start.hourofday, dt$City)</code></pre>
 <p><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-5.png" width="100%" /><img src="bikeshare_populartraveltimes_files/figure-html/unnamed-chunk-3-6.png" width="100%" /></p>
 <pre><code>## $Overall
 ##     metric     N
-##  1:     08 81734
-##  2:     17 79373
-##  3:     18 62237
-##  4:     07 61003
-##  5:     16 58937
-##  6:     09 53215
-##  7:     12 52109
-##  8:     11 45799
-##  9:     15 45756
-## 10:     19 41450
-## 11:     10 41401
-## 12:     14 41381
-## 13:     13 40487
-## 14:     06 38245
-## 15:     20 27341
-## 16:     05 27165
-## 17:     21 19142
-## 18:     04 16170
-## 19:     01 14211
-## 20:     22 13650
-## 21:     03 13108
-## 22:     02 12910
-## 23:     23  8436
-## 24:     00  4740
+##  1:     01 72670
+##  2:     10 72636
+##  3:     00 69154
+##  4:     09 65736
+##  5:     11 55292
+##  6:     05 52167
+##  7:     08 50178
+##  8:     02 49233
+##  9:     04 47922
+## 10:     23 46492
+## 11:     07 42907
+## 12:     03 42633
+## 13:     06 40576
+## 14:     12 37254
+## 15:     22 31537
+## 16:     13 25362
+## 17:     21 17540
+## 18:     14 17355
+## 19:     18 13830
+## 20:     20 13141
+## 21:     19 12697
+## 22:     15 12085
+## 23:     16  7398
+## 24:     17  4205
 ##     metric     N
 ## 
 ## $Grouped
 ##         grp.by metric     N
-##  1:    Chicago     17 35992
-##  2: Washington     08 33019
-##  3:    Newyork     17 30041
-##  4: Washington     07 28848
-##  5:    Chicago     16 28742
-##  6:    Newyork     18 28702
-##  7:    Newyork     08 24581
-##  8:    Chicago     08 24134
-##  9:    Chicago     18 23512
-## 10: Washington     06 23381
-## 11: Washington     05 22931
-## 12:    Newyork     16 21161
-## 13: Washington     09 20360
-## 14:    Chicago     15 20108
-## 15:    Newyork     19 19611
-## 16:    Newyork     09 19164
-## 17: Washington     12 18576
-## 18:    Newyork     15 18455
-## 19:    Chicago     07 18380
-## 20:    Newyork     14 17630
-## 21:    Chicago     14 17596
-## 22:    Chicago     13 17559
-## 23:    Chicago     12 17467
-## 24: Washington     11 16813
-## 25:    Newyork     13 16686
-## 26: Washington     10 16315
-## 27:    Newyork     12 16066
-## 28:    Chicago     19 15715
-## 29: Washington     04 15223
-## 30:    Chicago     11 15040
-## 31:    Newyork     11 13946
-## 32:    Newyork     07 13775
-## 33:    Chicago     09 13691
-## 34: Washington     17 13340
-## 35:    Newyork     20 13184
-## 36:    Newyork     10 13134
-## 37: Washington     03 12290
-## 38:    Chicago     10 11952
-## 39: Washington     01 11942
-## 40: Washington     02 11561
-## 41:    Chicago     20 10301
-## 42: Washington     18 10023
-## 43:    Newyork     21  9120
-## 44: Washington     16  9034
-## 45:    Chicago     06  8246
-## 46: Washington     15  7193
-## 47:    Chicago     21  7103
-## 48:    Newyork     22  6713
-## 49:    Newyork     06  6618
-## 50: Washington     13  6242
-## 51: Washington     14  6155
-## 52: Washington     19  6124
-## 53:    Chicago     22  4895
-## 54:    Newyork     23  4265
-## 55: Washington     20  3856
-## 56:    Chicago     23  3014
-## 57: Washington     21  2919
-## 58:    Chicago     05  2437
-## 59:    Newyork     00  2398
-## 60: Washington     22  2042
-## 61:    Newyork     05  1797
-## 62:    Chicago     00  1686
-## 63:    Newyork     01  1287
-## 64: Washington     23  1157
-## 65:    Chicago     01   982
-## 66:    Newyork     02   740
-## 67: Washington     00   656
-## 68:    Chicago     02   609
-## 69:    Newyork     04   480
-## 70:    Chicago     04   467
-## 71:    Newyork     03   446
-## 72:    Chicago     03   372
+##  1:    Chicago     10 32415
+##  2: Washington     00 32003
+##  3:    Chicago     09 30183
+##  4:    Newyork     10 29468
+##  5: Washington     01 29228
+##  6: Washington     23 26643
+##  7:    Newyork     11 26273
+##  8: Washington     22 24293
+##  9:    Newyork     09 23395
+## 10:    Newyork     01 22512
+## 11:    Chicago     08 22368
+## 12:    Chicago     11 21765
+## 13:    Chicago     01 20930
+## 14:    Chicago     00 19933
+## 15:    Newyork     08 19164
+## 16: Washington     02 19024
+## 17: Washington     05 18372
+## 18:    Chicago     07 18240
+## 19:    Newyork     12 18006
+## 20: Washington     04 17818
+## 21:    Newyork     07 17770
+## 22:    Chicago     05 17547
+## 23:    Chicago     06 17496
+## 24:    Newyork     00 17218
+## 25:    Newyork     02 17207
+## 26: Washington     03 16991
+## 27:    Newyork     06 16969
+## 28:    Newyork     05 16248
+## 29: Washington     21 15655
+## 30:    Chicago     04 15493
+## 31:    Chicago     12 14764
+## 32:    Newyork     04 14611
+## 33:    Newyork     03 13097
+## 34:    Chicago     02 13002
+## 35:    Chicago     03 12545
+## 36: Washington     20 12281
+## 37:    Newyork     13 12201
+## 38: Washington     09 12158
+## 39: Washington     18 11783
+## 40: Washington     19 11486
+## 41:    Chicago     23 10997
+## 42: Washington     10 10753
+## 43:    Chicago     13  9970
+## 44:    Newyork     23  8852
+## 45: Washington     08  8646
+## 46:    Newyork     14  8550
+## 47: Washington     11  7254
+## 48: Washington     07  6897
+## 49:    Chicago     14  6551
+## 50: Washington     06  6111
+## 51:    Newyork     15  6067
+## 52:    Chicago     15  4591
+## 53: Washington     12  4484
+## 54:    Chicago     22  4001
+## 55:    Newyork     16  3813
+## 56:    Newyork     22  3243
+## 57: Washington     13  3191
+## 58:    Chicago     16  2806
+## 59: Washington     14  2254
+## 60:    Newyork     17  2144
+## 61:    Chicago     17  1592
+## 62: Washington     15  1427
+## 63:    Newyork     18  1144
+## 64:    Chicago     21   952
+## 65:    Newyork     21   933
+## 66:    Chicago     18   903
+## 67: Washington     16   779
+## 68:    Newyork     19   667
+## 69:    Chicago     19   544
+## 70: Washington     17   469
+## 71:    Newyork     20   448
+## 72:    Chicago     20   412
 ##         grp.by metric     N</code></pre>
 </div>
 <div id="step-c-results-summary" class="section level2">
 <h2>Step c) Results summary</h2>
-<p>June is the most common rental month overall, as well as for each of the cities. This may be driven by warm summer temperatures, tourists visitings due to school holidays etc. Wednesday is the most common day for start of the rentals overall. When broken down by the city, we see that wednesday is still the most comon rental start day for New York and washington, but for Chicgo the most common day of retnal start is Tuesday. weekday rentals may be higher due to workers commuting to work. Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm being the most popular times for travel. This, again is likely due to the workers commuting to and from work at these hours. Trend by city shows the same dual peaks. The 5:00pm peak for washington is small, which may be due to overnight rentals.</p>
+<p>June is the most common rental month overall, as well as for each of
+the cities. This may be driven by warm summer temperatures, tourists
+visitings due to school holidays etc. Wednesday is the most common day
+for start of the rentals overall. When broken down by the city, we see
+that wednesday is still the most comon rental start day for New York and
+washington, but for Chicgo the most common day of retnal start is
+Tuesday. weekday rentals may be higher due to workers commuting to work.
+Hourly data shows a bimodal distribution overall with 08:00am and 5:00pm
+being the most popular times for travel. This, again is likely due to
+the workers commuting to and from work at these hours. Trend by city
+shows the same dual peaks. The 5:00pm peak for washington is small,
+which may be due to overnight rentals.</p>
 </div>
 </div>
 
@@ -661,11 +675,10 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 
 <!-- Add font awesome icons -->
 <p style="text-align: center;">
-    <a href="https://twitter.com/Statsw_eng" class="fa fa-twitter"></a>
     <a href="https://www.linkedin.com/in/amberahmed/" class="fa fa-linkedin"></a>
     <a href="https://github.com/AmberHabib?tab=repositories" class="fa fa-github"></a>
 </p>
-<p style="text-align: center;"><span style="color: #000000;"><em>amber.m.ahmed@gmail.com</em></span></p>
+<p style="text-align: center;"><span style="color: #000000;"><em>amber.m.ahmed@utexas.edu</em></span></p>
 <p style="text-align: center;">Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
 
 
@@ -676,7 +689,7 @@ freq.categorical(dt$start.month, dt$City)</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -694,7 +707,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

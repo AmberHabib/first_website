@@ -20,7 +20,7 @@ th1<- theme(
 c.palette <- c("dark green", "dark blue", "dark red")
 ```
 
-In this demo, I will build process control charts from scratch using ggplot2. I am new to R, and although I have made more than a few process QC visualizations,I have not used R for building a single one! In case you are wondering, my go to platform at work used to be JMP/JSL, but I am unemployed now, and do not want to spend the money for purchasing a JMP license - thankfully R is free and this way I get to learn something new, its a WIN-WIN!
+In this demo, I will build process control charts from scratch using ggplot2. I am new to R, and although I have made more than a few process QC visualizations,I have not used R for building a single one! In case you are wondering, my go to platform at work used to be JMP/JSL, but I am on parental leave now, and do not want to spend the money for purchasing a JMP license - thankfully R is free and this way I get to learn something new, its a WIN-WIN!
 
 I am going to use the article [HERE](https://sixsigmastudyguide.com/x-bar-r-control-charts/) as a guide for control limit calculations.
 

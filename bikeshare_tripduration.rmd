@@ -10,19 +10,20 @@ This project was completed as a part of the udacity data science with R nano deg
 library(data.table)
 library(stringr)
 library(ggplot2)
+library(viridis)
 
 
-#plot background theme, chosen by my 6 yr old :)
+
 th1<- theme(
-              panel.background = element_rect(fill = "pink",
-                                colour = "pink",
+              panel.background = element_rect(fill = "grey",
+                                colour = "grey",
                                 size = 0.5, linetype = "solid"),
               panel.grid.major = element_line(size = 0.5, linetype = 'solid',
                                 colour = "white"), 
               panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
                                 colour = "white"))
 # color palette vector for line plots
-c.palette <- c("purple", "magenta", "turquoise")
+c.palette <- c("darkblue", "darkgreen", "darkred")
 ```
 
 
@@ -66,14 +67,14 @@ print(summary.trip.duration)
 
 library(ggplot2)                   
 plt3<- ggplot(data = summary.trip.duration, aes(x=City, y=total.time.min)) + #generating plot for total time
-        geom_bar(stat = "identity", fill = "purple")+
+        geom_bar(stat = "identity", fill="darkblue")+
           ggtitle(paste0('Histogram for total tavel time'))+
           scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
           th1+labs(y = 'total travel time in minutes')
 print(plt3)
 
 plt4 <- ggplot(data = summary.trip.duration, aes(x=City, y=Avg.time.min)) + #generating plot for average time
-        geom_bar(stat = "identity", fill = "purple")+
+        geom_bar(stat = "identity", fill = "darkblue")+
           ggtitle(paste0('Histogram for average tavel time in minutes'))+
           scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
           th1+labs(y = 'Average travel time in minutes')
@@ -144,7 +145,7 @@ c.yr <- dt2[Birth.Year!=""& !is.na(Birth.Year)][,.(Count=.N), by=Birth.Year][ord
 head(c.yr,3)
 
 plt6 <-ggplot(data=c.yr, aes(x = Birth.Year, y= Count)) +
-              geom_bar(stat="identity", fill = 'purple')+
+              geom_bar(stat="identity", fill = 'darkblue')+
               scale_x_continuous(limits = c(1939, 2019), breaks = seq(1939, 2019, 10))+
               scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
               th1+

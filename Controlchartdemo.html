@@ -13,23 +13,37 @@
 
 <title>Control Chart Demo</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -42,32 +56,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -78,10 +68,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -98,40 +84,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -159,7 +121,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -171,7 +133,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -182,10 +144,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -197,7 +172,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -267,12 +241,12 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Ambers Website</a>
+      <a class="navbar-brand" href="index.html">Amber Ahmed</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -283,23 +257,29 @@ $(document).ready(function () {
   <a href="about.html">About Me</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Projects
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Process Engineering Data</li>
+    <li class="dropdown-header">Class Projects</li>
     <li>
-      <a href="Controlchartdemo.html">Control charts Demo</a>
+      <a href="oregon_wildfires.html">Oregon Wildfires</a>
     </li>
     <li class="divider"></li>
-    <li class="dropdown-header">Bikeshare data</li>
+    <li class="dropdown-header">Personal Projects</li>
+    <li>
+      <a href="fibonacci_spirals.html">Fibonacci Spirals</a>
+    </li>
     <li>
       <a href="bikeshare_populartraveltimes.html">Popular times of travel</a>
     </li>
     <li>
       <a href="bikeshare_tripduration.html">Trip duration and user info</a>
+    </li>
+    <li>
+      <a href="Controlchartdemo.html">Control charts Demo</a>
     </li>
   </ul>
 </li>
@@ -311,11 +291,11 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -328,10 +308,29 @@ $(document).ready(function () {
 </div>
 
 
-<p>In this demo, I will build process control charts from scratch using ggplot2. I am new to R, and although I have made more than a few process QC visualizations,I have not used R for building a single one! In case you are wondering, my go to platform at work used to be JMP/JSL, but I am unemployed now, and do not want to spend the money for purchasing a JMP license - thankfully R is free and this way I get to learn something new, its a WIN-WIN!</p>
-<p>I am going to use the article <a href="https://sixsigmastudyguide.com/x-bar-r-control-charts/">HERE</a> as a guide for control limit calculations.</p>
-<p>First step is to create a dataset. Below code will simulate production line data from a photresist (a chemical, usually liquid, used for manufacturing computer chips) manufacturing plant. The manufacturing process is a ‘batch process’ where each batch produces 100 bottles of resist. After packaging, 3+3+3 bottles are pulled from beginning, middle and end of the fill process and sent to internal QC. One of the QC check is to measure resist coat thickness after spin coating dummy silicon wafers. In reality, many variables (temperature, humidity, time elapsed between various process steps, operator, container/reactor and so on) can affect the end result.</p>
-<p>In below example - to keep things simple - we will only be looking at the variability as a function of varying raw material lot. For QC of this process I will be choosing a Xbar R chart.</p>
+<p>In this demo, I will build process control charts from scratch using
+ggplot2. I am new to R, and although I have made more than a few process
+QC visualizations,I have not used R for building a single one! In case
+you are wondering, my go to platform at work used to be JMP/JSL, but I
+am on parental leave now, and do not want to spend the money for
+purchasing a JMP license - thankfully R is free and this way I get to
+learn something new, its a WIN-WIN!</p>
+<p>I am going to use the article <a
+href="https://sixsigmastudyguide.com/x-bar-r-control-charts/">HERE</a>
+as a guide for control limit calculations.</p>
+<p>First step is to create a dataset. Below code will simulate
+production line data from a photresist (a chemical, usually liquid, used
+for manufacturing computer chips) manufacturing plant. The manufacturing
+process is a ‘batch process’ where each batch produces 100 bottles of
+resist. After packaging, 3+3+3 bottles are pulled from beginning, middle
+and end of the fill process and sent to internal QC. One of the QC check
+is to measure resist coat thickness after spin coating dummy silicon
+wafers. In reality, many variables (temperature, humidity, time elapsed
+between various process steps, operator, container/reactor and so on)
+can affect the end result.</p>
+<p>In below example - to keep things simple - we will only be looking at
+the variability as a function of varying raw material lot. For QC of
+this process I will be choosing a Xbar R chart.</p>
 <pre class="r"><code>set.seed(5555)
 resist_df1 &lt;- data.frame(
   resist_bottle = as.factor(rep(1:9, each=3)),
@@ -377,7 +376,16 @@ head(resist_df)</code></pre>
 ## 4             2                1      10.784097     1                  2                  1 2019-01-01 03:53:00
 ## 5             2                2      11.488648     1                  2                  1 2019-01-01 04:53:00
 ## 6             2                3       7.077962     1                  2                  1 2019-01-01 05:53:00</code></pre>
-<p>In the data table, you can see that each sample is measured 3x. We need to take the average of 3 measurments to calculate the Xbar for each sample, as well as the overall mean and the centerline for the plot. In the below snippet, first I created two new columns Xbar and range. Then I iterated through the data to calculate mean and range for each sample. Then I calcualated the centerline (cl), upper control limits (ucl), and lower control limit (lcl) for Xbar chart. This was followed by the range, as well as the upper control limit (ucl) for range calculation. The constants used in the formulas were taken from the article referenced at the begining of this post.</p>
+<p>In the data table, you can see that each sample is measured 3x. We
+need to take the average of 3 measurments to calculate the Xbar for each
+sample, as well as the overall mean and the centerline for the plot. In
+the below snippet, first I created two new columns Xbar and range. Then
+I iterated through the data to calculate mean and range for each sample.
+Then I calcualated the centerline (cl), upper control limits (ucl), and
+lower control limit (lcl) for Xbar chart. This was followed by the
+range, as well as the upper control limit (ucl) for range calculation.
+The constants used in the formulas were taken from the article
+referenced at the begining of this post.</p>
 <pre class="r"><code>resist_df_sbset &lt;- resist_df[,-7] #deleting the timestamp column
 
 #wide format to take average of 3 measurments for each sample
@@ -432,7 +440,14 @@ plt.rnge &lt;- ggplot(resist_df_wide, aes(x=resist_bottle, y=range, group = 1))+
   th1
 plt.xbar
 plt.rnge</code></pre>
-<p><img src="Controlchartdemo_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="Controlchartdemo_files/figure-html/unnamed-chunk-3-2.png" width="50%" /> The range chart is out of control, which points to an unstable process. The process is showing an assignable cause variation even on Xbar chart in the middle, from bottle 10-18. This is the second batch of the resist that was produced per the dataset we created. We have the raw material lot data available, we can plot the data as a function of raw material lots to assess whether this variation can be attributed to a bad batch of raw material.</p>
+<p><img src="Controlchartdemo_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="Controlchartdemo_files/figure-html/unnamed-chunk-3-2.png" width="50%" />
+The range chart is out of control, which points to an unstable process.
+The process is showing an assignable cause variation even on Xbar chart
+in the middle, from bottle 10-18. This is the second batch of the resist
+that was produced per the dataset we created. We have the raw material
+lot data available, we can plot the data as a function of raw material
+lots to assess whether this variation can be attributed to a bad batch
+of raw material.</p>
 <pre class="r"><code>#Xbar plot color by raw material A lot
 resist_df_wide$raw_material_A_lot &lt;- factor(resist_df_wide$raw_material_A_lot, levels = c(&#39;2&#39;,&#39;3&#39;))
 
@@ -470,8 +485,13 @@ plt.xbar.grp.lotB &lt;-ggplot(resist_df_wide, aes(x=resist_bottle, y=Xbar, group
   th1
 
 plt.xbar.grp.lotB</code></pre>
-<p><img src="Controlchartdemo_files/figure-html/unnamed-chunk-4-1.png" width="50%" /><img src="Controlchartdemo_files/figure-html/unnamed-chunk-4-2.png" width="50%" /> Raw material A batch was changed in the middle, and could be the possible special cause for the high variability observed for this batch.</p>
-<p>ggqc package is available on CRAN for making all kinds of QC visualizations. I just thought for the sake of learning it’d be better to make a plot from scratch for this demo. thanks for reading!</p>
+<p><img src="Controlchartdemo_files/figure-html/unnamed-chunk-4-1.png" width="50%" /><img src="Controlchartdemo_files/figure-html/unnamed-chunk-4-2.png" width="50%" />
+Raw material A batch was changed in the middle, and could be the
+possible special cause for the high variability observed for this
+batch.</p>
+<p>ggqc package is available on CRAN for making all kinds of QC
+visualizations. I just thought for the sake of learning it’d be better
+to make a plot from scratch for this demo. thanks for reading!</p>
 
 
 <!-- Add icon library -->
@@ -479,11 +499,10 @@ plt.xbar.grp.lotB</code></pre>
 
 <!-- Add font awesome icons -->
 <p style="text-align: center;">
-    <a href="https://twitter.com/Statsw_eng" class="fa fa-twitter"></a>
     <a href="https://www.linkedin.com/in/amberahmed/" class="fa fa-linkedin"></a>
     <a href="https://github.com/AmberHabib?tab=repositories" class="fa fa-github"></a>
 </p>
-<p style="text-align: center;"><span style="color: #000000;"><em>amber.m.ahmed@gmail.com</em></span></p>
+<p style="text-align: center;"><span style="color: #000000;"><em>amber.m.ahmed@utexas.edu</em></span></p>
 <p style="text-align: center;">Copyright &copy; <script>new Date().getFullYear()>2010&&document.write(+new Date().getFullYear());</script>, Amber Ahmed. All rights reserved.
 
 
@@ -494,7 +513,7 @@ plt.xbar.grp.lotB</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -512,7 +531,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

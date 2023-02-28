@@ -13,17 +13,16 @@ library(stringr)
 library(ggplot2)
 
 
-#plot background theme, chosen by my 6 yr old :)
 th1<- theme(
-              panel.background = element_rect(fill = "pink",
-                                colour = "pink",
+              panel.background = element_rect(fill = "grey",
+                                colour = "grey",
                                 size = 0.5, linetype = "solid"),
               panel.grid.major = element_line(size = 0.5, linetype = 'solid',
                                 colour = "white"), 
               panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
                                 colour = "white"))
 # color palette vector for line plots
-c.palette <- c("purple", "magenta", "turquoise")
+c.palette <- c("darkblue", "darkgreen", "darkred")
 ```
 
 # Question 1: Popular times of travel 
@@ -102,10 +101,10 @@ freq.categorical <- function(metric, grp.by){
       overall <- temp.overall[order(-N)]                #2
       temp.bygrp <- dt[, .N, by=.(grp.by, metric)]
       bygrp <- temp.bygrp[order(dt, -N)] #2
-      c.palette <- c("purple", "magenta", "turquoise")#3
+      c.palette <- c("darkblue", "darkgreen", "darkred")
       #4 (for overall)
       p<- list(
-          geom_bar(stat = "identity", fill = "purple"), 
+          geom_bar(stat = "identity", fill = "darkblue"), 
           ggtitle(paste0('Histogram for ', txt_usr_input1)),
           scale_y_continuous(labels = function(x) format(x, scientific = FALSE)),
           th1,labs(x = paste0(txt_usr_input1), y = 'Count')
