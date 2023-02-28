@@ -6,6 +6,71 @@ Hi! I am Amber. I am a Masters student in Data Science at UT Austin. Thank you f
 
 __CV__ If you want to learn more about my education and work experience, my [full CV is located here](https://amberahmedcv.netlify.app/)
 
+```{r setup, echo = FALSE, warning=FALSE, message = FALSE}
+library(ggplot2)
+library(gganimate)
+```
+
+```{r, echo=FALSE,warning=FALSE, message = FALSE}
+df <- data.frame(matrix(ncol = 4, nrow = 0))
+colnames(df) <- c('x', 'y', 'id','color_code')
+
+goldenratio <- 1.618
+ratios <- c(seq(0.6165,0.6180,0.0001))
+gamma <- 2*pi*(1-goldenratio)   #change in angle(radian)
+
+t=0
+gamma_n <- 0
+for(j in 1:length(ratios)){
+  gamma_n <- 2*pi*ratios[j]
+  #print(gamma_n)
+  id <- c() #shape id
+  x<- c()   #x-loc
+  y <- c() #y-loc
+  ccode <-c()
+  df_temp <- data.frame(matrix(ncol = 4, nrow = 0))
+  colnames(df_temp) <- c('x', 'y', 'id','color_code') 
+  
+  for (i in 1:1000){
+    x<- c(x,sqrt(i)*cos(i*gamma_n))
+    y<- c(y,sqrt(i)*sin(i*gamma_n))
+    id <- c(id,j)
+    
+  }
+  ccode<- c(rep(1,100),rep(2,100),rep(3,100),
+            rep(4,100),rep(5,100),rep(6,100),
+            rep(7,100),rep(8,100),rep(9,100),
+            rep(10,100))
+  df_temp <- data.frame(x = x, y = y, id = id, color_code = ccode)
+  df<- rbind(df,df_temp)
+  
+}
+
+
+
+library(gganimate)
+pv<- ggplot(data=df, aes(x=x,y=y, color = factor(color_code)))+
+  geom_point(size=1.5,aes(group=color_code))+
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.background = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.background = element_rect(fill='transparent'),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())+
+  transition_states(id,transition_length = 3, state_length = 1, wrap = FALSE)
+  #ease_aes('linear')+
+  #enter_fade()+
+  #exit_fade()
+  
+animate(pv, fps = 2)
+
+```
+
 
 This website has been created using R markdown. For initial set up, I found [this](https://livefreeordichotomize.com/2017/08/08/how-to-make-an-rmarkdown-website/) tutorial to be extremely helpful. I also used R markdown site documentation located [here](https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html).
 
