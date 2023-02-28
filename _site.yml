@@ -9,7 +9,6 @@ navbar:
       href: about.html
     - text: "Projects"
       menu:
-        
         - text: "Class Projects"
         - text: "Oregon Wildfires"
           href: oregon_wildfires.html
@@ -31,4 +30,4 @@ output:
     highlight: textmate
     includes:
       after_body: footer.html
-    css: style.css
+    #css: style.css
