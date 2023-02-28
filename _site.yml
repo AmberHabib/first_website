@@ -1,31 +1,19 @@
-name: "Amber Ahmed"
+name: "personal-website"
 output_dir: "."
 navbar:
-  title: "Amber Ahmed"
+  title: "Personal Website"
   left:
-    - text: "Home" 
-      href: index.html 
-    - text: "About Me" 
+    - text: "Home"
+      href: index.html
+    - text: "About Me"
       href: about.html 
     - text: "Projects" 
-    - menu:  
-        - text: "Class Projects"
-        - text: "Oregon Wildfires"
-          href: oregon_wildfires.html
-        - text: "---------"
-        - text: "Personal Projects"
-        - text: "Fibonacci Spirals"
-          href: fibonacci_spirals.html
-        - text: "Popular times of travel"
-          href: bikeshare_populartraveltimes.html
-        - text: "Trip duration and user info"
-          href: bikeshare_tripduration.html
-        - text: "Control charts Demo"
-          href: Controlchartdemo.html
+    
+    - menu: 
+        - text: "sth" 
+          href: about.html 
 output:
   html_document:
-    theme: cosmo
-    highlight: textmate
-    includes:
-      after_body: footer.html
+    theme: flatly
     css: style.css
+      

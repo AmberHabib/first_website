@@ -37,7 +37,7 @@ I used the same data table (dt) created in question 1 step a. The below code gen
 Note: I could have used the available trip.duration column for this analysis, instead of calculating the duration (start time - end time). This helped me learn more, and output is in minutes opposed to Trip.Duration column which shows the time recorded in seconds. 
 
 
-```{r}
+```{r, cache=TRUE}
 
 ch <- fread("Data/chicago.csv", select = c(2,3,4))         # read csv as data table
 ch[,"City":="Chicago"]
@@ -93,7 +93,7 @@ What are the earliest, most recent, most common year of birth (only available fo
 
 ## Step a) 
 Counts for each user type, counts for each gender overall, and counts for each gender broken down by city. Again used the data.table library functions for creating summaries and ggplot for visualizations.
-```{r}
+```{r, cache=TRUE}
 ch2 <- fread('Data/chicago.csv', select=c(7,8,9))
 ch2[,"City":= "Chicago"]
 
