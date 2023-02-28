@@ -8,9 +8,7 @@ navbar:
     - text: "About Me"
       href: about.html
     - text: "Projects"
-      menu:
-        - text: "Control charts Demo"
-          href: Controlchartdemo.html
+      href: Controlchartdemo.html
         
       
 output:
