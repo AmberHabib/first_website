@@ -9,17 +9,6 @@ navbar:
       href: about.html
     - text: "Projects"
       menu:
-        - text: "Class Projects"
-        - text: "Oregon Wildfires"
-          href: oregon_wildfires.html
-        - text: "---------"
-        - text: "Personal Projects"
-        - text: "Fibonacci Spirals"
-          href: fibonacci_spirals.html
-        - text: "Popular times of travel"
-          href: bikeshare_populartraveltimes.html
-        - text: "Trip duration and user info"
-          href: bikeshare_tripduration.html
         - text: "Control charts Demo"
           href: Controlchartdemo.html
         
