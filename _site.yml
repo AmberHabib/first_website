@@ -9,7 +9,6 @@ navbar:
       href: about.html
     - text: "Projects"
       menu:
-      
         - text: "Class Projects"
         - text: "Oregon Wildfires"
           href: oregon_wildfires.html
@@ -23,8 +22,6 @@ navbar:
           href: bikeshare_tripduration.html
         - text: "Control charts Demo"
           href: Controlchartdemo.html
-        
-      
 output:
   html_document:
     theme: cosmo
