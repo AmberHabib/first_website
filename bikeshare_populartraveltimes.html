@@ -59,6 +59,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -255,8 +256,32 @@ $(document).ready(function () {
 <li>
   <a href="about.html">About Me</a>
 </li>
-<li>
-  <a href="Controlchartdemo.html">Projects</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Class Projects</li>
+    <li>
+      <a href="oregon_wildfires.html">Oregon Wildfires</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Personal Projects</li>
+    <li>
+      <a href="fibonacci_spirals.html">Fibonacci Spirals</a>
+    </li>
+    <li>
+      <a href="bikeshare_populartraveltimes.html">Popular times of travel</a>
+    </li>
+    <li>
+      <a href="bikeshare_tripduration.html">Trip duration and user info</a>
+    </li>
+    <li>
+      <a href="Controlchartdemo.html">Control charts Demo</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

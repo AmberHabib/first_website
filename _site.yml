@@ -8,7 +8,21 @@ navbar:
     - text: "About Me"
       href: about.html
     - text: "Projects"
-      href: Controlchartdemo.html
+      menu:
+      
+        - text: "Class Projects"
+        - text: "Oregon Wildfires"
+          href: oregon_wildfires.html
+        - text: "---------"
+        - text: "Personal Projects"
+        - text: "Fibonacci Spirals"
+          href: fibonacci_spirals.html
+        - text: "Popular times of travel"
+          href: bikeshare_populartraveltimes.html
+        - text: "Trip duration and user info"
+          href: bikeshare_tripduration.html
+        - text: "Control charts Demo"
+          href: Controlchartdemo.html
         
       
 output:
@@ -17,4 +31,4 @@ output:
     highlight: textmate
     includes:
       after_body: footer.html
-    #css: style.css
+    css: style.css
