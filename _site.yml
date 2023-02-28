@@ -8,7 +8,7 @@ navbar:
     - text: "About Me"
       href: about.html
     - text: "Projects"
-      menu:
+      menu: 
         - text: "Class Projects"
         - text: "Oregon Wildfires"
           href: oregon_wildfires.html
