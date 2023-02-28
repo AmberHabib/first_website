@@ -3,12 +3,12 @@ output_dir: "."
 navbar:
   title: "Amber Ahmed"
   left:
-    - text: "Home"
-      href: index.html
-    - text: "About Me"
-      href: about.html
-    - text: "Projects"
-      menu: 
+    - text: "Home" 
+      href: index.html 
+    - text: "About Me" 
+      href: about.html 
+    - text: "Projects" 
+    - menu:  
         - text: "Class Projects"
         - text: "Oregon Wildfires"
           href: oregon_wildfires.html
