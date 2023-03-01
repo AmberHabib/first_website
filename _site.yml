@@ -8,10 +8,15 @@ navbar:
     - text: "About Me"
       href: about.html 
     - text: "Projects" 
-    
+      href: oregon_wildfires.html   
       menu: 
-        - text: "sth" 
-          href: about.html 
+        - text: "Class Projects"
+        - text: "Oregon Wildfires"
+          href: oregon_wildfires.html
+        - text: "---------"
+        - text: "Personal Projects"
+        - text: "Fibonacci Spirals" 
+          href: fibonacci_spirals.html
 output:
   html_document:
     theme: flatly
