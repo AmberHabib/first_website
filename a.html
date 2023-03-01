@@ -11,7 +11,7 @@
 
 
 
-<title>Fibonacci Spirals</title>
+<title>a.knit</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -30,7 +30,6 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -221,9 +220,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -284,79 +280,16 @@ $(document).ready(function () {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
-
-<h1 class="title toc-ignore">Fibonacci Spirals</h1>
 
 </div>
 
 
-<p>I have always found a sense of peace through painting and drawing
-geometric patterns. After all, geometry is the language of nature. I
-draw my inspiration from the ancient and medieval geometric art to
-recreate the patterns using a ruler and compass on a tracing paper, then
-transfer to the painting paper(watercolor). This time though, I wanted
-to do this using a computer program. This project is one example pattern
-created using the Fibonacci spirals.</p>
-<p>Before writing this post, I wasn’t familiar with the term Fibonacci
-spirals. I was only looking to find a way to draw some of my geometric
-patterns in R. I stumbled upon a picture of the center of a sunflower,
-showing the beautiful arrangement of the seeds in the middle.And I
-wondered, if I could create that pattern…</p>
-<p><a
-href="https://blog.wolfram.com/2011/07/28/how-i-made-wine-glasses-from-sunflowers/">This</a>
-post helped towards understanding the mathematics behind the
-arrangement. Three things noted in the arrangement are</p>
-<ul>
-<li><p>The seeds spiral outward, with each seed positioned at a fixed
-angle relative to its predecessor.</p></li>
-<li><p>The fixed angle is given by <span class="math inline">\(\Gamma =
-2\pi(1-\phi)\)</span>, where <span class="math inline">\(\phi =
-1.61803...\)</span> is the golden ratio.</p></li>
-<li><p>The ith seed is placed at a radial distance of <span
-class="math inline">\(\sqrt(i)\)</span></p></li>
-</ul>
-<p>Hence, in the polar coordinates, we can specify <span
-class="math inline">\([r,\theta] = [\sqrt(i), \Gamma*i]\)</span>. Since
-I wanted to plot the points on cartersian coordiantes, I used the polar
-to Cartesian conversion factors:</p>
-<ol style="list-style-type: decimal">
-<li><p><span class="math inline">\(x = rCos(\theta)\)</span></p></li>
-<li><p><span class="math inline">\(y = rSin(\theta)\)</span> and plugged
-in the values of r and the fixed angle <span
-class="math inline">\(\Gamma\)</span></p></li>
-</ol>
-<pre class="r"><code>x&lt;- c()   
-y &lt;- c()  
-
-goldenratio &lt;- 1.618
-gamma &lt;- 2*pi*(1-goldenratio)  
-
-for (i in 1:1000){
-  x&lt;- c(x,sqrt(i)*cos(i*gamma))
-  y&lt;- c(y,sqrt(i)*sin(i*gamma))
- 
-}
-
-df &lt;- data.frame(x = x, y = y)
-
-p &lt;- ggplot(data = df, aes(x=x,y=y))+
-  geom_point()
-
-p</code></pre>
-<p><img src="fibonacci_spirals_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>I generated the animation <a href="index.html">here</a> using
-gganimate() package. I experimented with values of <span
-class="math inline">\(\phi\)</span> other than golden ratio in the
-graphic.</p>
+<div id="persnal-website" class="section level2">
+<h2>Persnal Website</h2>
+<p>Hi!</p>
+</div>
 
 
 
@@ -391,11 +324,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

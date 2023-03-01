@@ -6,17 +6,16 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "About Me"
-      href: about.html 
+      href: a.html 
     - text: "Projects" 
-      href: oregon_wildfires.html   
       menu: 
         - text: "Class Projects"
-        - text: "Oregon Wildfires"
-          href: oregon_wildfires.html
+        - text: "P1"
+          href: a.html
         - text: "---------"
         - text: "Personal Projects"
-        - text: "Fibonacci Spirals" 
-          href: fibonacci_spirals.html
+        - text: "P2" 
+          href: a.html
 output:
   html_document:
     theme: flatly
