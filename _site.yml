@@ -9,7 +9,7 @@ navbar:
       href: about.html 
     - text: "Projects" 
     
-    - menu: 
+      menu: 
         - text: "sth" 
           href: about.html 
 output:
